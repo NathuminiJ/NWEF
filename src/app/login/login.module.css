@@ -1,0 +1,333 @@
+@keyframes login-orbit {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(0, 14px, 0) rotate(4deg);
+  }
+}
+
+@keyframes login-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page {
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  background:
+    radial-gradient(circle at 92% 8%, rgba(184, 150, 91, 0.08), transparent 24rem),
+    var(--cream);
+}
+
+.brandPanel {
+  position: relative;
+  min-height: 100svh;
+  padding: clamp(2rem, 5vw, 4.5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 4rem;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 12% 12%, rgba(184, 150, 91, 0.14), transparent 30rem),
+    var(--navy);
+  color: #fff;
+}
+
+.brandPanel::before {
+  content: '';
+  position: absolute;
+  width: 34rem;
+  height: 34rem;
+  right: -16rem;
+  bottom: -14rem;
+  border: 1px solid rgba(184, 150, 91, 0.25);
+  border-radius: 50%;
+  animation: login-orbit 16s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.brandPanel::after {
+  content: '';
+  position: absolute;
+  width: 22rem;
+  height: 22rem;
+  top: -11rem;
+  left: -9rem;
+  border: 1px solid rgba(184, 150, 91, 0.14);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.brand {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 180ms ease, gap 180ms ease;
+}
+
+.brand:hover {
+  gap: 1.1rem;
+  color: var(--gold);
+}
+
+.brandMark {
+  display: grid;
+  width: 2.7rem;
+  height: 2.7rem;
+  place-items: center;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  color: var(--gold);
+  font-family: var(--serif);
+  font-size: 0.88rem;
+  letter-spacing: 0.05em;
+  transition: transform 260ms ease, background 260ms ease;
+}
+
+.brand:hover .brandMark {
+  background: rgba(184, 150, 91, 0.14);
+  transform: rotate(-8deg);
+}
+
+.brandCopy {
+  position: relative;
+  z-index: 1;
+  max-width: 34rem;
+  animation: login-reveal 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.eyebrow {
+  margin: 0 0 1.5rem;
+  color: var(--gold);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(3rem, 5.5vw, 5.5rem);
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+  text-wrap: balance;
+}
+
+.description {
+  max-width: 30rem;
+  margin: 2rem 0 0;
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 1rem;
+  line-height: 1.8;
+  text-wrap: pretty;
+}
+
+.quote {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(184, 150, 91, 0.5);
+  color: rgba(255, 255, 255, 0.75);
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-style: italic;
+  line-height: 1.5;
+  transition: border-color 220ms ease, color 220ms ease;
+}
+
+.quote:hover {
+  border-color: var(--gold);
+  color: #fff;
+}
+
+.formPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2rem;
+  padding: clamp(2rem, 5vw, 5rem);
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--gold-dark);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 180ms ease, gap 180ms ease;
+}
+
+.backLink:hover {
+  gap: 0.8rem;
+  color: var(--navy);
+}
+
+.card {
+  position: relative;
+  width: min(100%, 30rem);
+  border: 1px solid var(--line);
+  background: #fff;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  box-shadow: 0 24px 60px rgba(19, 35, 47, 0.08);
+  animation: login-reveal 800ms 80ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 3.5rem;
+  height: 2px;
+  background: var(--gold);
+}
+
+.card:hover {
+  border-color: rgba(143, 108, 52, 0.3);
+  box-shadow: 0 28px 70px rgba(19, 35, 47, 0.12);
+  transform: translateY(-2px);
+}
+
+.card:focus-within {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px var(--gold-soft), 0 28px 70px rgba(19, 35, 47, 0.12);
+}
+
+.cardEyebrow {
+  margin: 0 0 0.75rem;
+  color: var(--gold-dark);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.cardTitle {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 2.5rem;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.cardDescription {
+  margin: 0.75rem 0 2rem;
+  color: var(--slate);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+
+.notice {
+  max-width: 30rem;
+  margin: 0;
+  color: var(--slate);
+  font-size: 0.7rem;
+  line-height: 1.7;
+}
+
+@media (max-width: 900px) {
+  .page {
+    grid-template-columns: 1fr;
+  }
+
+  .brandPanel {
+    min-height: 22rem;
+    gap: 2rem;
+    padding-block: 3rem;
+  }
+
+  .brandPanel::before {
+    width: 26rem;
+    height: 26rem;
+    right: -14rem;
+    bottom: -12rem;
+  }
+
+  .title {
+    font-size: clamp(2.6rem, 10vw, 4rem);
+  }
+
+  .description {
+    margin-top: 1rem;
+  }
+
+  .formPanel {
+    align-items: stretch;
+    padding-block: 3rem;
+  }
+
+  .backLink,
+  .notice {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .brandPanel {
+    min-height: 18rem;
+    padding: 1.75rem;
+  }
+
+  .title {
+    font-size: clamp(2.4rem, 12vw, 3.4rem);
+  }
+
+  .description {
+    font-size: 0.9rem;
+  }
+
+  .formPanel {
+    gap: 1.5rem;
+    padding: 2rem 1.25rem 3rem;
+  }
+
+  .card {
+    padding: 1.5rem;
+  }
+
+  .cardTitle {
+    font-size: 2.1rem;
+  }
+
+  .notice {
+    font-size: 0.66rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brandPanel::before,
+  .brandPanel::after,
+  .brandCopy,
+  .card {
+    animation: none;
+  }
+}

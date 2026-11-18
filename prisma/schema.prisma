@@ -1,0 +1,655 @@
+// Eng. Nahil Wijesuriya Endowment Fund — data model
+// PostgreSQL. All money values use Decimal(12,2). IDs are UUIDs.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Enums
+// ─────────────────────────────────────────────────────────────────────────────
+
+enum Role {
+  APPLICANT
+  ADMIN_OFFICER
+  SCREENING_REVIEWER
+  INTERVIEW_PANEL
+  TRUSTEE
+  FINANCE_OFFICER
+  SUPER_ADMIN
+}
+
+enum Stream {
+  OLD_TINITIAN_SUPPORT
+  SPORTS_SCHOLARSHIP
+}
+
+enum ApplicationStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_SCREENING
+  INFO_REQUESTED
+  SHORTLISTED
+  NOT_ELIGIBLE
+  INTERVIEW_SCHEDULED
+  INTERVIEWED
+  RECOMMENDED
+  NOT_RECOMMENDED
+  TRUSTEE_APPROVED
+  TRUSTEE_WAITLISTED
+  TRUSTEE_DECLINED
+  AWARD_ACCEPTED
+  ACTIVE_AWARD
+  ANNUAL_RENEWAL
+}
+
+enum ScreeningOutcome {
+  ELIGIBLE
+  NOT_ELIGIBLE
+  INFO_REQUESTED
+}
+
+enum DocumentType {
+  BIRTH_CERTIFICATE
+  SCHOOL_REPORT
+  NATIONAL_ID
+  SPORT_CERTIFICATE
+  COACH_RECOMMENDATION
+  RESULTS_SHEET
+  MEDICAL_CERTIFICATE
+  OTHER
+}
+
+enum InterviewMode {
+  IN_PERSON
+  ONLINE
+  HYBRID
+}
+
+enum BookingStatus {
+  BOOKED
+  ATTENDED
+  NO_SHOW
+  CANCELLED
+}
+
+enum InstalmentStatus {
+  PENDING
+  DUE
+  PAID
+  OVERDUE
+  WAIVED
+}
+
+enum InvoiceStatus {
+  ISSUED
+  PARTIALLY_PAID
+  PAID
+  CANCELLED
+}
+
+enum PaymentMethod {
+  BANK_TRANSFER
+  CHEQUE
+  CASH
+  ONLINE_GATEWAY
+  INTERNAL_JOURNAL
+}
+
+enum TrusteeDecisionType {
+  APPROVE
+  WAITLIST
+  DECLINE
+}
+
+enum AwardStatus {
+  OFFERED
+  ACCEPTED
+  ACTIVE
+  RENEWAL_DUE
+  CLOSED
+}
+
+enum AuditAction {
+  OTP_REQUESTED
+  OTP_VERIFIED
+  LOGIN
+  LOGOUT
+  SESSION_EXPIRED
+  VIEW
+  CREATE
+  UPDATE
+  DELETE
+  STATUS_CHANGE
+  DOCUMENT_UPLOAD
+  DOCUMENT_DOWNLOAD
+  SCORE_SUBMITTED
+  DECISION_MADE
+  PAYMENT_RECORDED
+  CONSENT_GRANTED
+  CONSENT_WITHDRAWN
+  DATA_REQUEST_CREATED
+  DATA_REQUEST_RESOLVED
+  AWARD_LETTER_GENERATED
+  E_SIGNATURE_CAPTURED
+  PERMISSION_DENIED
+}
+
+enum DataRequestType {
+  ACCESS
+  ERASURE
+  RECTIFICATION
+  PORTABILITY
+  OBJECTION
+}
+
+enum DataRequestStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  REJECTED
+}
+
+enum NotificationChannel {
+  SMS
+  EMAIL
+  IN_APP
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Identity, sessions, OTP
+// ─────────────────────────────────────────────────────────────────────────────
+
+model User {
+  id                   String    @id @default(uuid())
+  phone                String    @unique
+  email                String?   @unique
+  fullName             String
+  role                 Role      @default(APPLICANT)
+  isActive             Boolean   @default(true)
+  nicEncrypted         String?
+  bankAccountEncrypted String?
+  failedOtpAttempts    Int       @default(0)
+  lockedUntil          DateTime?
+  lastLoginAt          DateTime?
+  sessionVersion       Int       @default(0)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  sessions             Session[]
+  otpChallenges        OtpChallenge[]
+  guardianProfile      GuardianProfile?
+  children             Child[]                      @relation("GuardianChildren")
+  applications         Application[]                @relation("GuardianApplications")
+  auditLogs            AuditLog[]
+  screeningReviews     ScreeningReview[]
+  interviewSessions    InterviewSession[]           @relation("InterviewSessionCreator")
+  scores               Score[]
+  trusteeDecisions     TrusteeDecision[]
+  paymentsRecorded     Payment[]                    @relation("PaymentRecorder")
+  consents             ConsentRecord[]
+  dataRequests         DataSubjectRequest[]
+  handledDataRequests  DataSubjectRequest[]         @relation("DataRequestHandler")
+  notifications        Notification[]
+  documents            Document[]                   @relation("DocumentUploader")
+  timelineEvents       ApplicationTimelineEvent[]   @relation("TimelineActor")
+  acceptedAwards       Award[]                      @relation("AwardAcceptor")
+  infoRequestsCreated  InfoRequest[]                @relation("InfoRequestCreator")
+
+  @@index([role])
+}
+
+model Session {
+  id            String    @id @default(uuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash     String    @unique
+  expiresAt     DateTime
+  lastSeenAt    DateTime  @default(now())
+  createdAt     DateTime  @default(now())
+  revokedAt     DateTime?
+  ip            String?
+  userAgent     String?
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model OtpChallenge {
+  id         String    @id @default(uuid())
+  identifier String
+  userId     String?
+  user       User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  codeHash   String
+  attempts   Int       @default(0)
+  expiresAt  DateTime
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+  ip         String?
+
+  @@index([identifier, createdAt])
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Applicant domain
+// ─────────────────────────────────────────────────────────────────────────────
+
+model GuardianProfile {
+  id               String   @id @default(uuid())
+  userId           String   @unique
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  addressLine1     String?
+  addressLine2     String?
+  city             String?
+  district         String?
+  postalCode       String?
+  altPhone         String?
+  preferredLanguage String  @default("en")
+  relationshipToChild String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Child {
+  id          String   @id @default(uuid())
+  guardianId  String
+  guardian    User     @relation("GuardianChildren", fields: [guardianId], references: [id], onDelete: Cascade)
+  fullName    String
+  dateOfBirth DateTime
+  school      String
+  grade       String
+  gender      String?
+  notes       String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  applications Application[]
+  invoices     FeeInvoice[]
+
+  @@index([guardianId])
+}
+
+model Application {
+  id                   String            @id @default(uuid())
+  referenceNo          String            @unique
+  guardianId           String
+  guardian             User              @relation("GuardianApplications", fields: [guardianId], references: [id])
+  childId              String
+  child                Child             @relation(fields: [childId], references: [id])
+  stream               Stream
+  status               ApplicationStatus @default(DRAFT)
+  previousStatus       ApplicationStatus?
+  renewalOfId          String?
+  renewalOf            Application?      @relation("ApplicationRenewals", fields: [renewalOfId], references: [id])
+  renewals             Application[]     @relation("ApplicationRenewals")
+
+  // SLA clock (10-day screening turnaround, paused while info is requested)
+  clockPausedAt        DateTime?
+  pausedDurationMs     Int               @default(0)
+  slaDueAt             DateTime?
+
+  submittedAt          DateTime?
+  screeningCompletedAt DateTime?
+  decisionAt           DateTime?
+  awardAcceptedAt      DateTime?
+  version              Int               @default(1)
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+
+  streamA              StreamAData?
+  streamB              StreamBData?
+  documents            Document[]
+  timeline             ApplicationTimelineEvent[]
+  screeningReviews     ScreeningReview[]
+  infoRequests         InfoRequest[]
+  booking              InterviewBooking?
+  scores               Score[]
+  trusteeDecision      TrusteeDecision?
+  award                Award?
+  notifications        Notification[]
+
+  @@index([guardianId])
+  @@index([status, createdAt])
+  @@index([stream, status])
+}
+
+model StreamAData {
+  id            String      @id @default(uuid())
+  applicationId String      @unique
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  // Stream A deliberately has NO income/salary/employment-evidence fields.
+  // One optional free-text circumstances box only.
+  circumstances String?     @db.Text
+  updatedAt     DateTime    @updatedAt
+}
+
+model StreamBData {
+  id                    String      @id @default(uuid())
+  applicationId         String      @unique
+  application           Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  sport                 String
+  position              String
+  level                 String
+  results               String      @db.Text
+  recruitingCoachName   String
+  recruitingCoachPhone  String
+  recruitingCoachEmail  String?
+  clubOrSchool          String?
+  achievements          String?     @db.Text
+  coachDeclaration      Boolean     @default(false)
+  updatedAt             DateTime    @updatedAt
+}
+
+model Document {
+  id            String       @id @default(uuid())
+  applicationId String
+  application   Application  @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  type          DocumentType
+  fileName      String
+  mimeType      String
+  sizeBytes     Int
+  storageKey    String       @unique
+  checksum      String
+  scannedOk     Boolean      @default(false)
+  uploadedById  String
+  uploadedBy    User         @relation("DocumentUploader", fields: [uploadedById], references: [id])
+  createdAt     DateTime     @default(now())
+  deletedAt     DateTime?
+
+  @@index([applicationId])
+}
+
+model ApplicationTimelineEvent {
+  id          String            @id @default(uuid())
+  applicationId String
+  application Application       @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  fromStatus  ApplicationStatus?
+  toStatus    ApplicationStatus
+  action      String
+  actorId     String?
+  actor       User?             @relation("TimelineActor", fields: [actorId], references: [id], onDelete: SetNull)
+  actorRole   Role?
+  reason      String?           @db.Text
+  metadata    Json?
+  createdAt   DateTime          @default(now())
+
+  @@index([applicationId, createdAt])
+}
+
+model InfoRequest {
+  id            String      @id @default(uuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  requestedById String
+  requestedBy   User        @relation("InfoRequestCreator", fields: [requestedById], references: [id])
+  message       String      @db.Text
+  dueAt         DateTime?
+  respondedAt   DateTime?
+  response      String?     @db.Text
+  createdAt     DateTime    @default(now())
+
+  @@index([applicationId, createdAt])
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Screening, interviews, scoring
+// ─────────────────────────────────────────────────────────────────────────────
+
+model ScreeningReview {
+  id            String          @id @default(uuid())
+  applicationId String
+  application   Application     @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  reviewerId    String
+  reviewer      User            @relation(fields: [reviewerId], references: [id])
+  checklist     Json
+  outcome       ScreeningOutcome
+  notes         String?         @db.Text
+  submittedAt   DateTime        @default(now())
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([applicationId, submittedAt])
+}
+
+model InterviewSession {
+  id          String          @id @default(uuid())
+  title       String
+  location    String?
+  mode        InterviewMode   @default(IN_PERSON)
+  createdById String
+  createdBy   User            @relation("InterviewSessionCreator", fields: [createdById], references: [id])
+  slots       InterviewSlot[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model InterviewSlot {
+  id          String            @id @default(uuid())
+  sessionId   String
+  session     InterviewSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  startsAt    DateTime
+  endsAt      DateTime
+  capacity    Int               @default(1)
+  bookings    InterviewBooking[]
+  createdAt   DateTime          @default(now())
+
+  @@index([sessionId, startsAt])
+}
+
+model InterviewBooking {
+  id            String       @id @default(uuid())
+  applicationId String       @unique
+  application   Application  @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  slotId        String
+  slot          InterviewSlot @relation(fields: [slotId], references: [id], onDelete: Cascade)
+  status        BookingStatus @default(BOOKED)
+  bookedAt      DateTime     @default(now())
+  checkedInAt   DateTime?
+}
+
+model Score {
+  id            String      @id @default(uuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  panelMemberId String
+  panelMember   User        @relation(fields: [panelMemberId], references: [id])
+  criteria      Json        // [{ key, score (1-5), comment }]
+  weightedTotal Decimal     @db.Decimal(5, 2)
+  recommendation String     // RECOMMENDED | NOT_RECOMMENDED
+  comments      String?     @db.Text
+  submittedAt   DateTime    @default(now())
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@unique([applicationId, panelMemberId])
+  @@index([applicationId])
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Trustee decisions, awards, finance
+// ─────────────────────────────────────────────────────────────────────────────
+
+model TrusteeDecision {
+  id            String             @id @default(uuid())
+  applicationId String             @unique
+  application   Application        @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  trusteeId     String
+  trustee       User               @relation(fields: [trusteeId], references: [id])
+  decision      TrusteeDecisionType
+  approvedAmount Decimal?          @db.Decimal(12, 2)
+  notes         String?            @db.Text
+  batchId       String?
+  decidedAt     DateTime           @default(now())
+
+  @@index([batchId])
+}
+
+model Award {
+  id                   String      @id @default(uuid())
+  applicationId        String      @unique
+  application          Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  amount               Decimal     @db.Decimal(12, 2)
+  currency             String      @default("LKR")
+  status               AwardStatus @default(OFFERED)
+  letterKey            String?
+  letterGeneratedAt    DateTime?
+  acceptedAt           DateTime?
+  acceptedById         String?
+  acceptedBy           User?       @relation("AwardAcceptor", fields: [acceptedById], references: [id], onDelete: SetNull)
+  signatureDataUrl     String?     @db.Text
+  signatureName        String?
+  signatureIp          String?
+  validUntil           DateTime?
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
+
+  instalments          PaymentInstalment[]
+}
+
+model PaymentInstalment {
+  id          String          @id @default(uuid())
+  awardId     String
+  award       Award           @relation(fields: [awardId], references: [id], onDelete: Cascade)
+  sequence    Int
+  amount      Decimal         @db.Decimal(12, 2)
+  dueDate     DateTime
+  status      InstalmentStatus @default(PENDING)
+  invoiceId   String?
+  invoice     FeeInvoice?     @relation(fields: [invoiceId], references: [id], onDelete: SetNull)
+  paidAt      DateTime?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  payments    Payment[]
+
+  @@unique([awardId, sequence])
+  @@index([status, dueDate])
+}
+
+model FeeInvoice {
+  id          String            @id @default(uuid())
+  invoiceNo   String            @unique
+  childId     String
+  child       Child             @relation(fields: [childId], references: [id])
+  amount      Decimal           @db.Decimal(12, 2)
+  issuedAt    DateTime          @default(now())
+  dueDate     DateTime
+  status      InvoiceStatus     @default(ISSUED)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  instalments PaymentInstalment[]
+  payments    Payment[]
+}
+
+model Payment {
+  id            String          @id @default(uuid())
+  instalmentId  String
+  instalment    PaymentInstalment @relation(fields: [instalmentId], references: [id])
+  invoiceId     String
+  invoice       FeeInvoice      @relation(fields: [invoiceId], references: [id])
+  amount        Decimal         @db.Decimal(12, 2)
+  method        PaymentMethod
+  reference     String
+  paidAt        DateTime        @default(now())
+  recordedById  String
+  recordedBy    User            @relation("PaymentRecorder", fields: [recordedById], references: [id])
+  createdAt     DateTime        @default(now())
+
+  @@index([instalmentId])
+  @@index([invoiceId])
+}
+
+model Budget {
+  id              String   @id @default(uuid())
+  year            Int
+  stream          Stream
+  totalBudget     Decimal  @db.Decimal(14, 2)
+  committedAmount Decimal  @default(0) @db.Decimal(14, 2)
+  paidAmount      Decimal  @default(0) @db.Decimal(14, 2)
+  updatedAt       DateTime @updatedAt
+
+  @@unique([year, stream])
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Compliance: append-only audit, consent, data-subject requests, notifications
+// ─────────────────────────────────────────────────────────────────────────────
+
+model AuditLog {
+  id         String      @id @default(uuid())
+  actorId    String?
+  actor      User?       @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  actorRole  Role?
+  action     AuditAction
+  entityType String
+  entityId   String?
+  metadata   Json?
+  ip         String?
+  userAgent  String?
+  prevHash   String
+  hash       String
+  createdAt  DateTime    @default(now())
+
+  @@index([createdAt])
+  @@index([entityType, entityId])
+  @@index([actorId, createdAt])
+}
+
+model ConsentRecord {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  purpose     String
+  version     String
+  text        String    @db.Text
+  grantedAt   DateTime  @default(now())
+  withdrawnAt DateTime?
+  ip          String?
+
+  @@index([userId, purpose])
+}
+
+model DataSubjectRequest {
+  id           String            @id @default(uuid())
+  userId       String
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type         DataRequestType
+  status       DataRequestStatus @default(PENDING)
+  details      String?           @db.Text
+  requestedAt  DateTime          @default(now())
+  dueAt        DateTime
+  completedAt  DateTime?
+  handledById  String?
+  handledBy    User?             @relation("DataRequestHandler", fields: [handledById], references: [id], onDelete: SetNull)
+  resolution   String?           @db.Text
+
+  @@index([status, dueAt])
+}
+
+model Notification {
+  id          String            @id @default(uuid())
+  userId      String
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  applicationId String?
+  application Application?      @relation(fields: [applicationId], references: [id], onDelete: SetNull)
+  channel     NotificationChannel
+  template    String
+  payload     Json
+  status      NotificationStatus @default(PENDING)
+  sentAt      DateTime?
+  createdAt   DateTime          @default(now())
+
+  @@index([userId, createdAt])
+}

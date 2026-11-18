@@ -1,0 +1,281 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cream: #f4f0e7;
+  --cream-deep: #ece6d9;
+  --navy: #13232f;
+  --navy-soft: #1c3444;
+  --slate: #647077;
+  --gold: #b8965b;
+  --gold-dark: #8f6c34;
+  --gold-soft: rgba(184, 150, 91, 0.16);
+  --line: rgba(19, 35, 47, 0.15);
+  --shadow-sm: 0 12px 32px rgba(19, 35, 47, 0.06);
+  --shadow-md: 0 24px 60px rgba(19, 35, 47, 0.1);
+  --sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --serif: var(--font-italiana), Georgia, serif;
+}
+
+@keyframes nwef-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes nwef-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scrollbar-color: rgba(143, 108, 52, 0.35) transparent;
+    scrollbar-width: thin;
+  }
+
+  body {
+    @apply antialiased;
+    min-width: 320px;
+    color: var(--navy);
+    background:
+      radial-gradient(circle at 8% -8%, rgba(184, 150, 91, 0.07), transparent 34rem),
+      var(--cream);
+    font-family: var(--sans);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1 {
+    @apply text-2xl font-semibold tracking-tight;
+    text-wrap: balance;
+  }
+
+  h2 {
+    @apply text-lg font-semibold tracking-tight;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 5px var(--gold-soft);
+  }
+
+  ::selection {
+    background: var(--gold);
+    color: #fff;
+  }
+}
+
+@layer components {
+  .skip-link {
+    position: fixed;
+    z-index: 100;
+    top: -5rem;
+    left: 1rem;
+    padding: 0.75rem 1.1rem;
+    background: var(--navy);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: top 180ms ease, box-shadow 180ms ease;
+  }
+
+  .skip-link:focus {
+    top: 1rem;
+    box-shadow: var(--shadow-md);
+  }
+
+  .card {
+    border: 1px solid var(--line);
+    background: #fff;
+    padding: 1.25rem;
+    box-shadow: var(--shadow-sm);
+    transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+  }
+
+  .card:hover {
+    border-color: rgba(143, 108, 52, 0.3);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+
+  .badge {
+    transition: transform 160ms ease, box-shadow 160ms ease;
+  }
+
+  .badge:hover {
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-1px);
+  }
+
+  .field:focus-within .label {
+    color: var(--gold-dark);
+  }
+
+  .alert {
+    animation: nwef-rise 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .stat {
+    transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+  }
+
+  .stat:hover {
+    border-color: rgba(143, 108, 52, 0.3);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .label {
+    @apply mb-1 block text-sm font-medium;
+    color: var(--navy);
+  }
+
+  .input {
+    @apply w-full px-3 py-2 text-sm outline-none;
+    border: 1px solid var(--line);
+    border-radius: 0;
+    background: #fff;
+    color: var(--navy);
+    transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+  }
+
+  .input:hover {
+    border-color: rgba(143, 108, 52, 0.4);
+  }
+
+  .input:focus {
+    border-color: var(--gold);
+    background: #fffdf9;
+    box-shadow: 0 0 0 3px var(--gold-soft);
+  }
+
+  .input::placeholder {
+    color: #98a1a5;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-50;
+    border: 1px solid var(--navy);
+    border-radius: 0;
+    background: var(--navy);
+    color: #fff;
+    letter-spacing: 0.06em;
+    transition:
+      background 160ms ease,
+      color 160ms ease,
+      border-color 160ms ease,
+      transform 160ms ease,
+      box-shadow 160ms ease;
+  }
+
+  .btn:hover:not(:disabled) {
+    background: var(--navy-soft);
+    border-color: var(--navy-soft);
+    box-shadow: 0 8px 20px rgba(19, 35, 47, 0.16);
+    transform: translateY(-1px);
+  }
+
+  .btn:active:not(:disabled) {
+    box-shadow: none;
+    transform: translateY(0);
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-50;
+    border: 1px solid var(--line);
+    border-radius: 0;
+    background: #fff;
+    color: var(--navy);
+    letter-spacing: 0.06em;
+    transition:
+      border-color 160ms ease,
+      background 160ms ease,
+      transform 160ms ease,
+      box-shadow 160ms ease;
+  }
+
+  .btn-secondary:hover:not(:disabled) {
+    border-color: var(--gold);
+    background: #faf8f3;
+    box-shadow: 0 8px 20px rgba(19, 35, 47, 0.08);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary:active:not(:disabled) {
+    box-shadow: none;
+    transform: translateY(0);
+  }
+
+  .btn-spinner {
+    width: 0.9rem;
+    height: 0.9rem;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: nwef-spin 700ms linear infinite;
+  }
+
+  .table {
+    @apply w-full border-collapse text-left text-sm;
+  }
+
+  .table th {
+    @apply px-3 py-2 text-xs uppercase;
+    border-bottom: 1px solid var(--line);
+    color: var(--slate);
+    letter-spacing: 0.14em;
+  }
+
+  .table td {
+    @apply px-3 py-3 align-top;
+    border-bottom: 1px solid var(--line);
+    transition: background 140ms ease;
+  }
+
+  .table tbody tr:hover td {
+    background: rgba(244, 240, 231, 0.55);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

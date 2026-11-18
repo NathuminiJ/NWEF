@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: nwef-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: nwef
+      POSTGRES_PASSWORD: nwef
+      POSTGRES_DB: nwef
+    ports:
+      - '5432:5432'
+    volumes:
+      - nwef_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U nwef -d nwef']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  minio:
+    image: minio/minio:latest
+    container_name: nwef-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - nwef_miniodata:/data
+    profiles:
+      - storage
+
+volumes:
+  nwef_pgdata:
+  nwef_miniodata:

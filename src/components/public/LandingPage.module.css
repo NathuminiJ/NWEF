@@ -1,0 +1,602 @@
+@keyframes nwef-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 12px, 0);
+  }
+}
+
+@keyframes nwef-line {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  padding: 0 clamp(1.5rem, 6vw, 6rem);
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 78% 35%, rgba(184, 150, 91, 0.14), transparent 28%),
+    radial-gradient(circle at 8% 88%, rgba(19, 35, 47, 0.05), transparent 26%),
+    var(--cream);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 40rem;
+  height: 40rem;
+  top: 16%;
+  right: -20rem;
+  border: 1px solid rgba(151, 114, 53, 0.18);
+  border-radius: 50%;
+  animation: nwef-float 14s ease-in-out infinite;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 7rem;
+  right: clamp(1.5rem, 6vw, 6rem);
+  width: 7rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(184, 150, 91, 0.6));
+  transform-origin: right;
+  animation: nwef-line 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.nav {
+  position: relative;
+  z-index: 2;
+  max-width: 90rem;
+  height: 7rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  color: var(--navy);
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 180ms ease;
+}
+
+.brand:hover {
+  color: var(--gold-dark);
+}
+
+.brandMark {
+  display: grid;
+  width: 2.7rem;
+  height: 2.7rem;
+  place-items: center;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  color: var(--gold-dark);
+  font-family: var(--serif);
+  font-size: 0.88rem;
+  letter-spacing: 0.05em;
+  transition: transform 260ms ease, border-color 260ms ease, background 260ms ease;
+}
+
+.brand:hover .brandMark {
+  border-color: var(--gold-dark);
+  background: var(--gold-soft);
+  transform: rotate(-8deg);
+}
+
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2.5rem);
+}
+
+.navLink {
+  position: relative;
+  padding-block: 0.5rem;
+  color: var(--navy);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 180ms ease;
+}
+
+.navLink::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 220ms ease;
+}
+
+.navLink:hover {
+  color: var(--gold-dark);
+}
+
+.navLink:hover::after {
+  transform: scaleX(1);
+}
+
+.portalLink {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--gold);
+  color: var(--navy);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background 180ms ease, color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+.portalLink:hover {
+  background: var(--navy);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(19, 35, 47, 0.18);
+  transform: translateY(-2px);
+}
+
+.portalLink:active {
+  box-shadow: none;
+  transform: translateY(0);
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 79rem);
+  min-height: calc(100svh - 7rem);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(19rem, 0.9fr);
+  gap: clamp(3rem, 8vw, 9rem);
+  align-items: center;
+  padding: 4rem 0 7rem;
+}
+
+.heroCopy {
+  animation: nwef-rise 760ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.eyebrow {
+  margin: 0 0 1.6rem;
+  color: var(--gold-dark);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.heroTitle {
+  margin: 0;
+  color: var(--navy);
+  font-family: var(--serif);
+  font-size: clamp(3.6rem, 7.8vw, 7.5rem);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 0.88;
+  text-wrap: balance;
+}
+
+.heroTitleAccent {
+  display: inline-block;
+  margin-left: 0.2em;
+  color: var(--gold-dark);
+  font-family: var(--sans);
+  font-size: 0.17em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  vertical-align: middle;
+}
+
+.heroDescription {
+  max-width: 36rem;
+  margin: 2.3rem 0;
+  color: var(--slate);
+  font-size: clamp(1rem, 1.3vw, 1.18rem);
+  line-height: 1.8;
+  text-wrap: pretty;
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem 2rem;
+}
+
+.primaryLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--gold);
+  color: var(--navy);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: gap 200ms ease, color 200ms ease, border-color 200ms ease;
+}
+
+.primaryLink:hover,
+.purposeLink:hover {
+  gap: 1.4rem;
+  color: var(--gold-dark);
+}
+
+.primaryLink svg,
+.purposeLink svg {
+  width: 1.1rem;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+  transition: transform 200ms ease;
+}
+
+.primaryLink:hover svg,
+.purposeLink:hover svg {
+  transform: translateX(3px);
+}
+
+.secondaryLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--gold-dark);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.5rem;
+  text-transform: uppercase;
+  transition: color 180ms ease, text-underline-offset 180ms ease;
+}
+
+.secondaryLink:hover {
+  color: var(--navy);
+  text-underline-offset: 0.7rem;
+}
+
+.portraitWrap {
+  position: relative;
+  justify-self: end;
+  width: min(100%, 28rem);
+  animation: nwef-rise 900ms 120ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.portraitWrap::before {
+  content: '';
+  position: absolute;
+  inset: -1.2rem 1.2rem 3.5rem -1.2rem;
+  border: 1px solid var(--gold);
+  opacity: 0.4;
+  transition: inset 300ms ease, opacity 300ms ease;
+}
+
+.portraitWrap:hover::before {
+  inset: -1.6rem 0.8rem 3.1rem -1.6rem;
+  opacity: 0.7;
+}
+
+.portraitFrame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 1px solid rgba(143, 108, 52, 0.28);
+  background: #d7d0c4;
+  box-shadow: 0 2rem 4rem rgba(19, 34, 47, 0.18);
+}
+
+.portraitFrame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 58%, rgba(19, 35, 47, 0.16));
+  pointer-events: none;
+}
+
+.portrait {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center top;
+  filter: saturate(0.86) contrast(1.03);
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1), filter 700ms ease;
+}
+
+.portraitFrame:hover .portrait {
+  filter: saturate(0.98) contrast(1.02);
+  transform: scale(1.035);
+}
+
+.portraitCaption {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  color: var(--slate);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.portraitCaption span[aria-hidden] {
+  color: var(--gold);
+}
+
+.scrollCue {
+  position: absolute;
+  z-index: 2;
+  bottom: 2.2rem;
+  left: clamp(1.5rem, 6vw, 6rem);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: var(--slate);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.17em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 180ms ease, gap 180ms ease;
+}
+
+.scrollCue:hover {
+  gap: 1.1rem;
+  color: var(--navy);
+}
+
+.scrollCue span {
+  width: 2.2rem;
+  height: 1px;
+  background: var(--gold);
+}
+
+.purpose {
+  position: relative;
+  display: grid;
+  grid-template-columns: 0.25fr minmax(0, 1fr) minmax(18rem, 0.75fr);
+  gap: clamp(2rem, 6vw, 7rem);
+  align-items: start;
+  padding: clamp(6rem, 12vw, 11rem) clamp(1.5rem, 8vw, 9rem);
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 88% 12%, rgba(184, 150, 91, 0.1), transparent 26rem),
+    var(--navy);
+  color: #fff;
+  scroll-margin-top: 1rem;
+}
+
+.purpose::before {
+  content: '';
+  position: absolute;
+  width: 32rem;
+  height: 32rem;
+  top: -18rem;
+  left: 38%;
+  border: 1px solid rgba(184, 150, 91, 0.16);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.sectionNumber {
+  position: relative;
+  color: var(--gold);
+  font-family: var(--serif);
+  font-size: 1.6rem;
+}
+
+.purposeContent {
+  position: relative;
+}
+
+.purposeContent .eyebrow {
+  color: var(--gold);
+}
+
+.purposeTitle {
+  max-width: 45rem;
+  margin: 0 0 2.2rem;
+  font-family: var(--serif);
+  font-size: clamp(2.8rem, 5vw, 5.2rem);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.purposeDescription {
+  max-width: 38rem;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+  line-height: 1.9;
+  text-wrap: pretty;
+}
+
+.purposeLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--gold);
+  color: #fff;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: gap 200ms ease, color 200ms ease;
+}
+
+.purposeLink:hover {
+  color: var(--gold);
+}
+
+.quote {
+  position: relative;
+  margin: 5.5rem 0 0;
+  padding: 2rem 0 0 2rem;
+  border-top: 1px solid rgba(184, 150, 91, 0.5);
+  color: rgba(255, 255, 255, 0.82);
+  font-family: var(--serif);
+  font-size: clamp(1.35rem, 2vw, 1.8rem);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.quote span {
+  display: block;
+  height: 2.8rem;
+  color: var(--gold);
+  font-size: 4rem;
+  line-height: 1;
+}
+
+.footer {
+  min-height: 9rem;
+  padding: 2rem clamp(1.5rem, 6vw, 6rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  background: #fff;
+  color: var(--slate);
+  font-size: 0.72rem;
+}
+
+.footerName {
+  margin: 0;
+  text-align: center;
+}
+
+.footerLinks {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.footerLinks a {
+  padding-block: 0.5rem;
+  color: var(--navy);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 180ms ease;
+}
+
+.footerLinks a:hover {
+  color: var(--gold-dark);
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-underline-offset: 0.4rem;
+}
+
+@media (max-width: 800px) {
+  .heroContent {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+    padding-top: 5rem;
+  }
+
+  .portraitWrap {
+    width: min(90%, 25rem);
+    justify-self: center;
+  }
+
+  .scrollCue {
+    display: none;
+  }
+
+  .purpose {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .quote {
+    margin-top: 1rem;
+  }
+
+  .footer {
+    flex-direction: column;
+    padding-block: 3rem;
+  }
+
+  .footerName {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav {
+    height: 5.5rem;
+  }
+
+  .brand > span:last-child,
+  .navLink,
+  .portalLink {
+    font-size: 0.62rem;
+  }
+
+  .portalLink {
+    padding: 0.6rem 0.7rem;
+  }
+
+  .heroContent {
+    min-height: calc(100svh - 5.5rem);
+  }
+
+  .heroDescription {
+    margin-block: 1.8rem;
+  }
+
+  .portraitCaption {
+    gap: 0.4rem;
+    font-size: 0.54rem;
+  }
+
+  .footerBrand > span:last-child {
+    display: inline;
+  }
+
+  .footerLinks {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}

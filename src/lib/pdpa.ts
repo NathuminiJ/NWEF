@@ -2,15 +2,23 @@ import { createCipheriv, createDecipheriv, randomBytes } from 'node:crypto';
 import { config } from './config';
 import { prisma } from './db';
 
-const key = Buffer.from(config.pdpaEncryptionKey, 'base64');
-if (key.length !== 32) {
-  throw new Error('PDPA_ENCRYPTION_KEY must be a base64-encoded 32-byte key');
+let cachedKey: Buffer | null = null;
+
+/** Lazy so `next build` does not require PDPA_ENCRYPTION_KEY at build time. */
+function encryptionKey(): Buffer {
+  if (cachedKey) return cachedKey;
+  const key = Buffer.from(config.pdpaEncryptionKey, 'base64');
+  if (key.length !== 32) {
+    throw new Error('PDPA_ENCRYPTION_KEY must be a base64-encoded 32-byte key');
+  }
+  cachedKey = key;
+  return key;
 }
 
 /** AES-256-GCM field-level encryption for identifiers and bank details. */
 export function encryptPii(plaintext: string): string {
   const iv = randomBytes(12);
-  const cipher = createCipheriv('aes-256-gcm', key, iv);
+  const cipher = createCipheriv('aes-256-gcm', encryptionKey(), iv);
   const encrypted = Buffer.concat([cipher.update(plaintext, 'utf8'), cipher.final()]);
   const tag = cipher.getAuthTag();
   return [iv.toString('base64'), tag.toString('base64'), encrypted.toString('base64')].join('.');
@@ -19,7 +27,7 @@ export function encryptPii(plaintext: string): string {
 export function decryptPii(payload: string): string {
   const [ivPart, tagPart, dataPart] = payload.split('.');
   if (!ivPart || !tagPart || !dataPart) throw new Error('Malformed encrypted value');
-  const decipher = createDecipheriv('aes-256-gcm', key, Buffer.from(ivPart, 'base64'));
+  const decipher = createDecipheriv('aes-256-gcm', encryptionKey(), Buffer.from(ivPart, 'base64'));
   decipher.setAuthTag(Buffer.from(tagPart, 'base64'));
   return Buffer.concat([decipher.update(Buffer.from(dataPart, 'base64')), decipher.final()]).toString('utf8');
 }

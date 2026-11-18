@@ -1,4 +1,11 @@
-function env(name: string, devFallback: string): string {
+/**
+ * Runtime configuration.
+ *
+ * Secrets are intentionally exposed through getters so that `next build` can
+ * collect page data without production secrets being present. They are still
+ * validated as soon as a request actually needs them.
+ */
+function secret(name: string, devFallback: string): string {
   const value = process.env[name];
   if (value && value.length > 0) return value;
   if (process.env.NODE_ENV === 'production') {
@@ -15,10 +22,18 @@ function numberEnv(name: string, fallback: number): number {
 export const config = {
   appUrl: process.env.APP_URL ?? 'http://localhost:3000',
   appName: process.env.APP_NAME ?? 'NWEF Online Application Portal',
-  otpSecret: env('OTP_SECRET', 'dev-only-otp-secret-change-me'),
-  sessionSecret: env('SESSION_SECRET', 'dev-only-session-secret-change-me'),
-  auditSecret: env('AUDIT_SECRET', 'dev-only-audit-secret-change-me'),
-  pdpaEncryptionKey: env('PDPA_ENCRYPTION_KEY', 'ZGV2LW9ubHktMzItYnl0ZS1rZXktY2hhbmdlLW1lISE='),
+  get otpSecret() {
+    return secret('OTP_SECRET', 'dev-only-otp-secret-change-me');
+  },
+  get sessionSecret() {
+    return secret('SESSION_SECRET', 'dev-only-session-secret-change-me');
+  },
+  get auditSecret() {
+    return secret('AUDIT_SECRET', 'dev-only-audit-secret-change-me');
+  },
+  get pdpaEncryptionKey() {
+    return secret('PDPA_ENCRYPTION_KEY', 'ZGV2LW9ubHktMzItYnl0ZS1rZXktY2hhbmdlLW1lISE=');
+  },
   storage: {
     driver: (process.env.STORAGE_DRIVER ?? 'local') as 'local' | 's3',
     localDir: process.env.LOCAL_STORAGE_DIR ?? '.storage',

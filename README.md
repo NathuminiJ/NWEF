@@ -39,6 +39,26 @@ Seeded staff phones: `+94770000001` … `+94770000006` (Admin → Super Admin). 
 
 ---
 
+## Deploying to Vercel
+
+The production build no longer needs secrets at build time — they are validated on first use at runtime. Add these in **Vercel → Project Settings → Environment Variables** for Production (and Preview if needed):
+
+| Variable | Notes |
+| --- | --- |
+| `DATABASE_URL` | PostgreSQL connection string (Vercel Postgres or external provider). Run `npm run prisma:deploy` once against this database. |
+| `OTP_SECRET` | Long random string. Generate with `openssl rand -base64 48`. |
+| `SESSION_SECRET` | Different long random string. |
+| `AUDIT_SECRET` | Another different long random string. |
+| `PDPA_ENCRYPTION_KEY` | Base64-encoded 32-byte key. Generate with `openssl rand -base64 32`. |
+| `APP_URL` | Your deployed URL, e.g. `https://nwef.vercel.app`. |
+| `STORAGE_DRIVER` | Set to `s3` on Vercel; local `.storage` is ephemeral and not writable. |
+| `S3_BUCKET`, `S3_REGION`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY` | Required when `STORAGE_DRIVER=s3`. |
+| `OTP_DRIVER`, `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM_NUMBER` | Set `OTP_DRIVER=twilio` in production; `console` only logs codes and is for local development. |
+
+After setting them, redeploy. If Vercel blocks Prisma/esbuild install scripts, approve them in the deployment settings or add `npx prisma generate && npm run build` as the build command.
+
+---
+
 ## Project structure
 
 ```text

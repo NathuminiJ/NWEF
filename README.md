@@ -45,7 +45,8 @@ The production build no longer needs secrets at build time — they are validate
 
 | Variable | Notes |
 | --- | --- |
-| `DATABASE_URL` | PostgreSQL connection string from Neon, Supabase, Vercel Postgres, or another hosted provider. Do **not** use `localhost`. Vercel applies the Prisma migrations automatically on each deployment. |
+| `DATABASE_URL` | Pooled PostgreSQL connection string from Neon, Supabase, Vercel Postgres, or another hosted provider. Do **not** use `localhost`. |
+| `DIRECT_URL` | Optional but recommended on Neon: the direct/non-pooled connection string. Vercel uses it for Prisma migrations; the app still uses `DATABASE_URL`. For Neon, it is the same URL with `-pooler` removed from the hostname. |
 | `OTP_SECRET` | Long random string. Generate with `openssl rand -base64 48`. |
 | `SESSION_SECRET` | Different long random string. |
 | `AUDIT_SECRET` | Another different long random string. |
@@ -55,7 +56,7 @@ The production build no longer needs secrets at build time — they are validate
 | `S3_BUCKET`, `S3_REGION`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY` | Required when `STORAGE_DRIVER=s3`. |
 | `OTP_DRIVER`, `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM_NUMBER` | Set `OTP_DRIVER=twilio` in production; `console` only logs codes and is for local development. |
 
-After setting them, redeploy. The `prebuild` hook attempts `prisma migrate deploy` only on Vercel, so database tables are created automatically once `DATABASE_URL` is reachable. A migration failure is logged but does not stop the build, so the site stays online while you fix the database setting. To also create the demo staff accounts and annual budgets, set `SEED_ON_DEPLOY=true`; the seed uses upserts and is safe to repeat.
+After setting them, redeploy. The `prebuild` hook attempts `prisma migrate deploy` only on Vercel, using `DIRECT_URL` when available, so database tables are created automatically once the database is reachable. A migration failure is logged but does not stop the build, so the site stays online while you fix the database setting. To also create the demo staff accounts and annual budgets, set `SEED_ON_DEPLOY=true`; the seed uses upserts and is safe to repeat.
 
 If Vercel blocks Prisma/esbuild install scripts, approve them in the deployment settings or use this build command: `npx prisma generate && npm run build`.
 

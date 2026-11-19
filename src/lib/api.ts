@@ -39,9 +39,46 @@ export function route(handler: RouteHandler): RouteHandler {
         );
       }
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2021') {
+          return NextResponse.json(
+            {
+              success: false,
+              error: {
+                code: 'DATABASE_SCHEMA_MISSING',
+                message: 'The database tables are missing. Run the Prisma migration before using the portal.',
+              },
+            },
+            { status: 503 },
+          );
+        }
         const status = error.code === 'P2002' ? 409 : error.code === 'P2025' ? 404 : 400;
         const message = error.code === 'P2002' ? 'A record with these details already exists' : 'Request could not be completed';
         return NextResponse.json({ success: false, error: { code: error.code, message } }, { status });
+      }
+      if (error instanceof Prisma.PrismaClientInitializationError) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: {
+              code: 'DATABASE_UNAVAILABLE',
+              message: 'The database is unavailable. Check the DATABASE_URL environment variable.',
+            },
+          },
+          { status: 503 },
+        );
+      }
+      if (error instanceof Error && error.message.startsWith('Missing required environment variable:')) {
+        const name = error.message.replace('Missing required environment variable:', '').trim();
+        return NextResponse.json(
+          {
+            success: false,
+            error: {
+              code: 'SERVER_CONFIG_ERROR',
+              message: `Server configuration is incomplete. Add ${name} to the Vercel environment variables and redeploy.`,
+            },
+          },
+          { status: 503 },
+        );
       }
       if (error instanceof AppError) {
         return NextResponse.json(

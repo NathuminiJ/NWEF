@@ -54,11 +54,23 @@ The production build no longer needs secrets at build time — they are validate
 | `APP_URL` | Your deployed URL, e.g. `https://nwef.vercel.app`. |
 | `STORAGE_DRIVER` | Set to `s3` on Vercel; local `.storage` is ephemeral and not writable. |
 | `S3_BUCKET`, `S3_REGION`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY` | Required when `STORAGE_DRIVER=s3`. |
-| `OTP_DRIVER`, `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM_NUMBER` | Set `OTP_DRIVER=twilio` in production; `console` only logs codes and is for local development. |
+| `OTP_DRIVER` | `console` prints codes in Vercel Runtime Logs; `twilio` sends a real SMS. |
+| `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM_NUMBER` | Required when `OTP_DRIVER=twilio`. Use the Twilio number in E.164 format, e.g. `+15551234567`. |
 
 After setting them, redeploy. The `prebuild` hook attempts `prisma migrate deploy` only on Vercel, using `DIRECT_URL` when available, so database tables are created automatically once the database is reachable. A migration failure is logged but does not stop the build, so the site stays online while you fix the database setting. To also create the demo staff accounts and annual budgets, set `SEED_ON_DEPLOY=true`; the seed uses upserts and is safe to repeat.
 
 If Vercel blocks Prisma/esbuild install scripts, approve them in the deployment settings or use this build command: `npx prisma generate && npm run build`.
+
+### Sending real SMS verification codes
+
+1. Create a free Twilio account at https://www.twilio.com.
+2. In Twilio Console, open **Phone Numbers → Manage → Active numbers** and buy a number with SMS capability.
+3. Copy **Account SID** and **Auth Token** from the Twilio Console home page.
+4. If using a trial account, open **Verified Caller IDs** and verify the mobile number that will receive the OTP.
+5. In Vercel, set `OTP_DRIVER=twilio`, `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, and `TWILIO_FROM_NUMBER`, then redeploy.
+6. Applicant numbers are normalised to E.164, e.g. `0759015289` → `+94759015289`.
+
+If delivery fails, the login form now shows an SMS error instead of pretending the code was sent.
 
 ---
 

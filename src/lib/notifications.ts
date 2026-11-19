@@ -1,11 +1,12 @@
 import { Prisma } from '@prisma/client';
 import { config } from './config';
+import { AppError } from './errors';
 
 async function sendTwilio(to: string, body: string): Promise<void> {
   const { twilioAccountSid, twilioAuthToken, twilioFromNumber } = config.otp;
   if (!twilioAccountSid || !twilioAuthToken || !twilioFromNumber) {
     console.error('[notifications] Twilio is not configured');
-    return;
+    throw new AppError('SMS provider is not configured. Contact the portal administrator.', 503, 'SMS_NOT_CONFIGURED');
   }
   const auth = Buffer.from(`${twilioAccountSid}:${twilioAuthToken}`).toString('base64');
   const response = await fetch(
@@ -19,7 +20,11 @@ async function sendTwilio(to: string, body: string): Promise<void> {
       body: new URLSearchParams({ To: to, From: twilioFromNumber, Body: body }),
     },
   );
-  if (!response.ok) console.error('[notifications] SMS delivery failed', response.status);
+  if (!response.ok) {
+    const details = await response.text().catch(() => '');
+    console.error('[notifications] SMS delivery failed', response.status, details);
+    throw new AppError('The verification SMS could not be sent. Please try again later.', 502, 'SMS_DELIVERY_FAILED');
+  }
 }
 
 export async function sendOtpCode(identifier: string, code: string): Promise<void> {

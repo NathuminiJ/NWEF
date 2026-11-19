@@ -6,6 +6,8 @@ export type ErrorCode =
   | 'CONFLICT'
   | 'VALIDATION_ERROR'
   | 'RATE_LIMITED'
+  | 'SMS_NOT_CONFIGURED'
+  | 'SMS_DELIVERY_FAILED'
   | 'INTERNAL';
 
 export class AppError extends Error {

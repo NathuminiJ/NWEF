@@ -51,7 +51,7 @@ if (!migrated) {
   console.warn('[deploy] check DATABASE_URL in Vercel → Settings → Environment Variables.');
 }
 
-if (process.env.SEED_ON_DEPLOY === 'true') {
+if (process.env.SEED_ON_DEPLOY !== 'false') {
   console.log('[deploy] seeding staff accounts and budget envelopes');
   run(npx, ['tsx', 'prisma/seed.ts'], 'Seed');
 }

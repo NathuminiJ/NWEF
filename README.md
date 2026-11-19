@@ -57,7 +57,7 @@ The production build no longer needs secrets at build time — they are validate
 | `OTP_DRIVER` | `console` prints codes in Vercel Runtime Logs; `twilio` sends a real SMS. |
 | `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM_NUMBER` | Required when `OTP_DRIVER=twilio`. Use the Twilio number in E.164 format, e.g. `+15551234567`. |
 
-After setting them, redeploy. The `prebuild` hook attempts `prisma migrate deploy` only on Vercel, using `DIRECT_URL` when available, so database tables are created automatically once the database is reachable. A migration failure is logged but does not stop the build, so the site stays online while you fix the database setting. To also create the demo staff accounts and annual budgets, set `SEED_ON_DEPLOY=true`; the seed uses upserts and is safe to repeat.
+After setting them, redeploy. The `prebuild` hook attempts `prisma migrate deploy` only on Vercel, using `DIRECT_URL` when available, so database tables are created automatically once the database is reachable. A migration failure is logged but does not stop the build, so the site stays online while you fix the database setting. Demo staff accounts and annual budgets are seeded automatically on Vercel; set `SEED_ON_DEPLOY=false` to skip. The seed uses upserts and is safe to repeat.
 
 If Vercel blocks Prisma/esbuild install scripts, approve them in the deployment settings or use this build command: `npx prisma generate && npm run build`.
 

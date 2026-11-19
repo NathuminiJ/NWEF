@@ -55,7 +55,7 @@ The production build no longer needs secrets at build time — they are validate
 | `S3_BUCKET`, `S3_REGION`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY` | Required when `STORAGE_DRIVER=s3`. |
 | `OTP_DRIVER`, `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM_NUMBER` | Set `OTP_DRIVER=twilio` in production; `console` only logs codes and is for local development. |
 
-After setting them, redeploy. The `prebuild` hook runs `prisma migrate deploy` only on Vercel, so database tables are created automatically. To also create the demo staff accounts and annual budgets, set `SEED_ON_DEPLOY=true`; the seed uses upserts and is safe to repeat.
+After setting them, redeploy. The `prebuild` hook attempts `prisma migrate deploy` only on Vercel, so database tables are created automatically once `DATABASE_URL` is reachable. A migration failure is logged but does not stop the build, so the site stays online while you fix the database setting. To also create the demo staff accounts and annual budgets, set `SEED_ON_DEPLOY=true`; the seed uses upserts and is safe to repeat.
 
 If Vercel blocks Prisma/esbuild install scripts, approve them in the deployment settings or use this build command: `npx prisma generate && npm run build`.
 

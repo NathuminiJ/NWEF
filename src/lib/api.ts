@@ -56,12 +56,17 @@ export function route(handler: RouteHandler): RouteHandler {
         return NextResponse.json({ success: false, error: { code: error.code, message } }, { status });
       }
       if (error instanceof Prisma.PrismaClientInitializationError) {
+        const databaseUrlConfigured = Boolean(process.env.DATABASE_URL?.trim());
+        const prismaCode = (error as { errorCode?: string }).errorCode;
         return NextResponse.json(
           {
             success: false,
             error: {
               code: 'DATABASE_UNAVAILABLE',
-              message: 'The database is unavailable. Check the DATABASE_URL environment variable.',
+              message: databaseUrlConfigured
+                ? 'The database cannot be reached. Check the DATABASE_URL value and database firewall settings.'
+                : 'DATABASE_URL is not set. Add the hosted PostgreSQL connection string in Vercel and redeploy.',
+              details: prismaCode ? { prismaCode } : undefined,
             },
           },
           { status: 503 },

@@ -61,6 +61,10 @@ After setting them, redeploy. The `prebuild` hook attempts `prisma migrate deplo
 
 If Vercel blocks Prisma/esbuild install scripts, approve them in the deployment settings or use this build command: `npx prisma generate && npm run build`.
 
+### Temporary demo OTP
+
+For demos only, every verification code is currently fixed to `123456` (override with `DEMO_OTP_CODE`). Remove the `DEMO_OTP_CODE` constant in `src/lib/auth/otp.ts` before real launch — otherwise anyone who knows a phone number can sign in.
+
 ### Sending real SMS verification codes
 
 1. Create a free Twilio account at https://www.twilio.com.

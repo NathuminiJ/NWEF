@@ -1,4 +1,3 @@
-import { randomInt } from 'node:crypto';
 import type { User } from '@prisma/client';
 import { config } from '@/lib/config';
 import { prisma } from '@/lib/db';
@@ -8,6 +7,13 @@ import { isEmail, normalisePhone } from '@/lib/utils';
 import type { RequestMeta } from '@/lib/audit';
 import { sendOtpCode } from '@/lib/notifications';
 import { createSession } from './session';
+
+/**
+ * TEMPORARY DEMO MODE — REMOVE BEFORE REAL LAUNCH.
+ * While this is set, every OTP challenge uses this fixed code so a reviewer
+ * can sign in with any mobile number using 123456.
+ */
+const DEMO_OTP_CODE = process.env.DEMO_OTP_CODE?.trim() || '123456';
 
 function codeHash(identifier: string, code: string): string {
   return hmac(config.otpSecret, `${identifier}:${code}`);
@@ -49,9 +55,10 @@ export async function requestOtp(rawIdentifier: string, meta: RequestMeta = {}) 
   }
   if (!user.isActive) throw new UnauthorizedError('This account is disabled');
 
-  const code = randomInt(0, 10 ** config.otp.length)
-    .toString()
-    .padStart(config.otp.length, '0');
+  const code = DEMO_OTP_CODE;
+  // const code = randomInt(0, 10 ** config.otp.length)
+  //   .toString()
+  //   .padStart(config.otp.length, '0');
   const expiresAt = new Date(Date.now() + config.otp.ttlMinutes * 60_000);
 
   await prisma.otpChallenge.create({

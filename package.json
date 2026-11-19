@@ -5,6 +5,7 @@
   "description": "Eng. Nahil Wijesuriya Endowment Fund (NWEF) Online Application Portal",
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/deploy-migrate.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

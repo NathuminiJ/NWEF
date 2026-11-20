@@ -1,24 +1,14 @@
 import { spawnSync } from 'node:child_process';
 
 /**
- * Vercel-only prebuild step.
+ * Prebuild step. Always regenerates the Prisma client from the committed
+ * schema so new fields are available to TypeScript during `next build`.
  *
- * Attempts to apply Prisma migrations during deployment so a newly created
- * hosted database gets its tables automatically. Failures are logged but do
- * not stop the build — the site must stay reachable so runtime errors can
- * still explain what needs fixing. Local builds always skip this step.
+ * On Vercel it also attempts to apply migrations and seed staff/budget data.
+ * Failures are logged but do not stop the build — the site must stay reachable
+ * so runtime errors can still explain what needs fixing.
  */
 const isVercel = process.env.VERCEL === '1';
-
-if (!isVercel) {
-  console.log('[deploy] local build — skipping automatic database migration');
-  process.exit(0);
-}
-
-if (!process.env.DATABASE_URL?.trim()) {
-  console.warn('[deploy] DATABASE_URL is not set; skipping automatic migration.');
-  process.exit(0);
-}
 
 function run(command, args, label, env = process.env) {
   const result = spawnSync(command, args, {
@@ -38,6 +28,22 @@ function run(command, args, label, env = process.env) {
 }
 
 const npx = process.platform === 'win32' ? 'npx.cmd' : 'npx';
+
+if (!isVercel) {
+  console.log('[deploy] local build — skipping automatic database migration');
+  process.exit(0);
+}
+
+console.log('[deploy] generating Prisma client from the committed schema');
+if (!run(npx, ['prisma', 'generate'], 'Prisma generate')) {
+  console.error('[deploy] Prisma client generation failed; aborting build.');
+  process.exit(1);
+}
+
+if (!process.env.DATABASE_URL?.trim()) {
+  console.warn('[deploy] DATABASE_URL is not set; skipping automatic migration.');
+  process.exit(0);
+}
 
 console.log('[deploy] applying Prisma migrations to the hosted database');
 // Neon recommends a direct (non-pooler) connection for CLI migrations. When

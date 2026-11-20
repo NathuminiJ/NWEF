@@ -11,10 +11,10 @@ export default async function SuperAdminPage() {
 
   return (
     <AppShell user={user}>
-      <div>
+      <header className="page-heading">
         <h1>Super administration</h1>
-        <p className="mt-1 text-sm text-slate-600">Role management, audit integrity and PDPA request handling.</p>
-      </div>
+        <p className="page-lede">Role management, audit integrity and PDPA request handling.</p>
+      </header>
       <div className="grid gap-4 sm:grid-cols-3">
         <Stat label="Accounts" value={String(users.length)} />
         <Stat label="Audit chain" value={integrity.valid ? 'Valid' : 'Broken'} sub={integrity.brokenAt ?? undefined} />

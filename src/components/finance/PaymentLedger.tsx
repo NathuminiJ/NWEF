@@ -39,7 +39,7 @@ export function PaymentLedger({ rows }: { rows: LedgerRow[] }) {
                   <td className="font-medium">{row.award.application.referenceNo}</td>
                   <td>
                     {row.award.application.child.fullName}
-                    <br /><span className="text-xs text-slate-500">{row.award.application.guardian.fullName}</span>
+                    <br /><span className="text-xs text-muted">{row.award.application.guardian.fullName}</span>
                   </td>
                   <td>#{row.sequence}</td>
                   <td>{row.invoice?.invoiceNo ?? '—'}</td>
@@ -48,7 +48,7 @@ export function PaymentLedger({ rows }: { rows: LedgerRow[] }) {
                   <td>
                     <Badge tone={row.status === 'PAID' ? 'green' : row.status === 'OVERDUE' ? 'red' : 'amber'}>{row.status}</Badge>
                     {row.payments.map((payment) => (
-                      <p key={payment.reference} className="mt-1 text-xs text-slate-500">
+                      <p key={payment.reference} className="mt-1 text-xs text-muted">
                         {payment.reference} · {formatMoney(payment.amount)} · {formatDate(payment.paidAt)}
                       </p>
                     ))}

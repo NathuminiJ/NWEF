@@ -47,12 +47,12 @@ export function InterviewBooking({ applicationId, bookedSlotId }: { applicationI
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-slate-600">Select an available interview slot. Booking immediately updates your status.</p>
+      <p className="text-sm text-muted">Select an available interview slot. Booking immediately updates your status.</p>
       {error && <Alert tone="red">{error}</Alert>}
       {sessions.map((session) => (
-        <div key={session.id} className="border border-[var(--line)] p-4">
+        <div key={session.id} className="border border-line p-4">
           <p className="font-medium">{session.title}</p>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-muted">
             {session.mode.replaceAll('_', ' ')} · {session.location ?? 'Location to be confirmed'}
           </p>
           <div className="mt-3 grid gap-2 sm:grid-cols-2">
@@ -60,10 +60,10 @@ export function InterviewBooking({ applicationId, bookedSlotId }: { applicationI
               const full = slot.bookings.length >= slot.capacity;
               const selected = slot.id === bookedSlotId;
               return (
-                <div key={slot.id} className="flex items-center justify-between bg-cream px-3 py-2">
+                <div key={slot.id} className="flex items-center justify-between bg-surface px-3 py-2">
                   <div>
                     <p className="text-sm">{formatDate(slot.startsAt)}</p>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-muted">
                       {slot.bookings.length}/{slot.capacity} booked
                     </p>
                   </div>

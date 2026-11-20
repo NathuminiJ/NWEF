@@ -43,10 +43,10 @@ export function InfoRequestPanel({
 
   if (!open) return null;
   return (
-    <div className="space-y-3 border border-amber-200 border-l-4 border-l-amber-500 bg-amber-50 p-4 shadow-sm transition-shadow hover:shadow-md">
-      <p className="font-medium text-amber-900">Information requested</p>
-      <p className="text-sm text-amber-800">{open.message}</p>
-      <p className="text-xs text-amber-700">Requested {formatDate(open.createdAt)} — screening clock is paused.</p>
+    <div className="alert alert-warning space-y-3">
+      <p className="font-medium text-ink">Information requested</p>
+      <p className="text-sm text-ink">{open.message}</p>
+      <p className="text-xs text-muted">Requested {formatDate(open.createdAt)} — screening clock is paused.</p>
       {error && <Alert tone="red">{error}</Alert>}
       {canRespond && (
         <>

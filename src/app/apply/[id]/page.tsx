@@ -29,10 +29,10 @@ export default async function EditApplicationPage({ params }: { params: Promise<
   return (
     <AppShell user={user}>
       <div className="space-y-5">
-        <div>
+        <header className="page-heading">
           <h1>Application {detail.referenceNo}</h1>
-          <p className="mt-1 text-sm text-slate-600">Complete the steps below. Drafts are saved automatically.</p>
-        </div>
+          <p className="page-lede">Complete the steps below. Drafts are saved automatically.</p>
+        </header>
         <Card>
           <ApplicationWizard
             application={{

@@ -80,24 +80,24 @@ export function DocumentUploader({
       )}
       <div className="space-y-2">
         {documents.map((document) => (
-          <div key={document.id} className="flex items-center justify-between border border-[var(--line)] px-3 py-2">
+          <div key={document.id} className="flex items-center justify-between border border-line px-3 py-2">
             <div>
               <p className="text-sm font-medium">{document.fileName}</p>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-muted">
                 {document.type.replaceAll('_', ' ')} · {(document.sizeBytes / 1024).toFixed(0)} KB · {formatDate(document.createdAt)}
               </p>
             </div>
             <div className="flex items-center gap-2">
               <Badge tone="green">Uploaded</Badge>
               {!disabled && (
-                <a className="text-sm text-brand-600 hover:underline" href={`/api/documents/${document.id}`}>
+                <a className="text-sm text-brand hover:underline" href={`/api/documents/${document.id}`}>
                   View
                 </a>
               )}
             </div>
           </div>
         ))}
-        {documents.length === 0 && <p className="text-sm text-slate-500">No documents uploaded yet.</p>}
+        {documents.length === 0 && <p className="text-sm text-muted">No documents uploaded yet.</p>}
       </div>
     </div>
   );

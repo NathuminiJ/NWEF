@@ -73,11 +73,11 @@ export function AwardAcceptance({
   }
 
   return (
-    <div className="space-y-4 border border-emerald-200 border-l-4 border-l-emerald-500 bg-emerald-50 p-4 shadow-sm transition-shadow hover:shadow-md">
+    <div className="alert alert-success space-y-4">
       <div>
-        <p className="font-medium text-emerald-900">Award offered: {formatMoney(amount, currency)}</p>
-        <p className="text-sm text-emerald-800">Review the award letter, then sign below to accept.</p>
-        <a className="text-sm text-brand-600 hover:underline" href={`/api/applications/${applicationId}/award-letter`}>
+        <p className="numeric font-medium text-ink">Award offered: {formatMoney(amount, currency)}</p>
+        <p className="text-sm text-muted">Review the award letter, then sign below to accept.</p>
+        <a className="text-sm text-brand hover:underline" href={`/api/applications/${applicationId}/award-letter`}>
           Download award letter
         </a>
       </div>
@@ -91,13 +91,13 @@ export function AwardAcceptance({
           ref={canvasRef}
           width={480}
           height={120}
-          className="w-full max-w-md touch-none border border-[var(--line)] bg-white"
+          className="w-full max-w-md touch-none rounded-sm border border-line bg-canvas"
           onPointerDown={start}
           onPointerMove={move}
           onPointerUp={() => (drawing.current = false)}
           onPointerLeave={() => (drawing.current = false)}
         />
-        <button type="button" className="mt-1 text-xs text-brand-600 hover:underline" onClick={clear}>
+        <button type="button" className="mt-1 text-xs text-brand hover:underline" onClick={clear}>
           Clear signature
         </button>
       </div>

@@ -21,10 +21,10 @@ export default async function PanelPage({ searchParams }: { searchParams: Promis
 
   return (
     <AppShell user={user}>
-      <div>
+      <header className="page-heading">
         <h1>Interview panel</h1>
-        <p className="mt-1 text-sm text-slate-600">Independent scoring with stream-specific weighted criteria.</p>
-      </div>
+        <p className="page-lede">Independent scoring with stream-specific weighted criteria.</p>
+      </header>
       <div className="grid gap-6 lg:grid-cols-[1fr,1.2fr]">
         <Card title={`Interview queue (${applications.length})`}>
           {applications.length === 0 ? (
@@ -35,14 +35,14 @@ export default async function PanelPage({ searchParams }: { searchParams: Promis
                 <Link
                   key={item.id}
                   href={`/panel?app=${item.id}`}
-                  className={`block border p-3 ${selected?.id === item.id ? 'border-brand-500 bg-brand-50' : 'border-[var(--line)] hover:bg-cream'}`}
+                  className={`block border p-3 ${selected?.id === item.id ? 'border-brand bg-surface' : 'border-line hover:bg-surface'}`}
                 >
                   <div className="flex justify-between gap-2">
                     <span className="text-sm font-medium">{item.referenceNo}</span>
                     <Badge tone="blue">{item.status.replaceAll('_', ' ')}</Badge>
                   </div>
-                  <p className="text-xs text-slate-500">{item.child.fullName} · {item.stream.replaceAll('_', ' ')}</p>
-                  {item.booking && <p className="text-xs text-slate-500">{formatDate(item.booking.slot.startsAt)}</p>}
+                  <p className="text-xs text-muted">{item.child.fullName} · {item.stream.replaceAll('_', ' ')}</p>
+                  {item.booking && <p className="text-xs text-muted">{formatDate(item.booking.slot.startsAt)}</p>}
                 </Link>
               ))}
             </div>
@@ -53,7 +53,7 @@ export default async function PanelPage({ searchParams }: { searchParams: Promis
             <div className="space-y-4">
               <Card title={selected.referenceNo} description={selected.child.fullName}>
                 <div className="flex flex-wrap items-center gap-3">
-                  <Link className="text-sm text-brand-600 hover:underline" href={`/applications/${selected.id}`}>View application</Link>
+                  <Link className="text-sm text-brand hover:underline" href={`/applications/${selected.id}`}>View application</Link>
                   {selected.status === 'INTERVIEW_SCHEDULED' && <AttendButton applicationId={selected.id} />}
                 </div>
               </Card>

@@ -34,10 +34,10 @@ export default async function ApplicationDetailPage({ params }: { params: Promis
   return (
     <AppShell user={user}>
       <div className="space-y-6">
-        <div className="flex flex-wrap items-start justify-between gap-4">
+        <header className="page-heading flex flex-wrap items-start justify-between gap-4">
           <div>
             <h1>{application.referenceNo}</h1>
-            <p className="mt-1 text-sm text-slate-600">
+            <p className="page-lede">
               {application.child.fullName} · {application.stream === 'OLD_TINITIAN_SUPPORT' ? 'Stream A — Old Trinitian Support' : 'Stream B — Sports Scholarship'}
             </p>
           </div>
@@ -45,7 +45,7 @@ export default async function ApplicationDetailPage({ params }: { params: Promis
             <Badge tone="blue">{STATUS_LABELS[application.status]}</Badge>
             <Badge tone={sla.flag === 'OVERDUE' ? 'red' : sla.flag === 'DUE_SOON' ? 'amber' : 'slate'}>{slaLabel(sla.flag)}</Badge>
           </div>
-        </div>
+        </header>
 
         <div className="grid gap-4 sm:grid-cols-3">
           <Stat label="Submitted" value={formatDate(application.submittedAt)} />
@@ -99,7 +99,7 @@ export default async function ApplicationDetailPage({ params }: { params: Promis
 
         {application.status === 'ACTIVE_AWARD' && (
           <Card title="Annual renewal">
-            <p className="mb-3 text-sm text-slate-600">Renewal applications open each academic year while the award is active.</p>
+            <p className="mb-3 text-sm text-muted">Renewal applications open each academic year while the award is active.</p>
             <RenewalButton applicationId={id} />
           </Card>
         )}
@@ -125,10 +125,10 @@ export default async function ApplicationDetailPage({ params }: { params: Promis
 
         {application.award && (
           <Card title="Award & payments">
-            <p className="text-sm">Awarded: {formatMoney(application.award.amount, application.award.currency)}</p>
+            <p className="numeric text-sm">Awarded: {formatMoney(application.award.amount, application.award.currency)}</p>
             <ul className="mt-3 space-y-2 text-sm">
               {application.award.instalments.map((instalment) => (
-                <li key={instalment.id} className="flex justify-between bg-cream px-3 py-2">
+                <li key={instalment.id} className="flex justify-between bg-surface px-3 py-2">
                   <span>Instalment {instalment.sequence} · due {formatDate(instalment.dueDate)}</span>
                   <Badge tone={instalment.status === 'PAID' ? 'green' : 'amber'}>{instalment.status}</Badge>
                 </li>

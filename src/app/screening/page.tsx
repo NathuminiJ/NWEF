@@ -15,10 +15,10 @@ export default async function ScreeningPage({ searchParams }: { searchParams: Pr
 
   return (
     <AppShell user={user}>
-      <div>
+      <header className="page-heading">
         <h1>Screening queue</h1>
-        <p className="mt-1 text-sm text-slate-600">Complete the checklist and record an eligibility outcome.</p>
-      </div>
+        <p className="page-lede">Complete the checklist and record an eligibility outcome.</p>
+      </header>
       <div className="grid gap-6 lg:grid-cols-[1fr,1.2fr]">
         <Card title={`Awaiting review (${queue.length})`}>
           {queue.length === 0 ? (
@@ -29,14 +29,14 @@ export default async function ScreeningPage({ searchParams }: { searchParams: Pr
                 <Link
                   key={item.id}
                   href={`/screening?app=${item.id}`}
-                  className={`block border p-3 ${selected?.id === item.id ? 'border-brand-500 bg-brand-50' : 'border-[var(--line)] hover:bg-cream'}`}
+                  className={`block border p-3 ${selected?.id === item.id ? 'border-brand bg-surface' : 'border-line hover:bg-surface'}`}
                 >
                   <div className="flex justify-between gap-2">
                     <span className="text-sm font-medium">{item.referenceNo}</span>
                     <Badge tone={item.sla.flag === 'OVERDUE' ? 'red' : item.sla.flag === 'DUE_SOON' ? 'amber' : 'slate'}>{item.sla.flag}</Badge>
                   </div>
-                  <p className="text-xs text-slate-500">{item.child.fullName} · {item.stream.replaceAll('_', ' ')}</p>
-                  <p className="text-xs text-slate-500">Due {formatDate(item.sla.effectiveDueAt)}</p>
+                  <p className="text-xs text-muted">{item.child.fullName} · {item.stream.replaceAll('_', ' ')}</p>
+                  <p className="text-xs text-muted">Due {formatDate(item.sla.effectiveDueAt)}</p>
                 </Link>
               ))}
             </div>
@@ -46,12 +46,12 @@ export default async function ScreeningPage({ searchParams }: { searchParams: Pr
           {selected ? (
             <div className="space-y-4">
               <Card title={selected.referenceNo} description={`${selected.child.fullName} · ${selected.child.school}`}>
-                <p className="text-sm text-slate-600">
+                <p className="text-sm text-muted">
                   {selected.stream === 'OLD_TINITIAN_SUPPORT'
                     ? `Circumstances: ${selected.streamA?.circumstances || 'None provided'}`
                     : `Sport: ${selected.streamB?.sport} · ${selected.streamB?.position} · ${selected.streamB?.level}`}
                 </p>
-                <Link className="mt-2 inline-block text-sm text-brand-600 hover:underline" href={`/applications/${selected.id}`}>
+                <Link className="mt-2 inline-block text-sm text-brand hover:underline" href={`/applications/${selected.id}`}>
                   View full application and documents
                 </Link>
               </Card>

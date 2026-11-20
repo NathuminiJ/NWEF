@@ -153,7 +153,7 @@ export function ApplicationWizard({ application }: { application: WizardApplicat
             </Badge>
           ))}
         </div>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-muted">
           {saveState === 'saving' ? 'Saving…' : saveState === 'saved' ? 'Draft saved' : 'Auto-save enabled'}
         </p>
       </div>
@@ -256,9 +256,9 @@ export function ApplicationWizard({ application }: { application: WizardApplicat
       {step === 3 && (
         <Card title="Review & submit">
           <dl className="grid gap-3 text-sm md:grid-cols-2">
-            <div><dt className="text-slate-500">Child</dt><dd className="font-medium">{form.fullName}</dd></div>
-            <div><dt className="text-slate-500">Stream</dt><dd className="font-medium">{application.stream.replaceAll('_', ' ')}</dd></div>
-            <div><dt className="text-slate-500">Documents</dt><dd className="font-medium">{application.documents.length} uploaded</dd></div>
+            <div><dt className="text-muted">Child</dt><dd className="font-medium">{form.fullName}</dd></div>
+            <div><dt className="text-muted">Stream</dt><dd className="font-medium">{application.stream.replaceAll('_', ' ')}</dd></div>
+            <div><dt className="text-muted">Documents</dt><dd className="font-medium">{application.documents.length} uploaded</dd></div>
           </dl>
           <label className="mt-5 flex items-start gap-2 text-sm">
             <input type="checkbox" checked={consent} onChange={(event) => setConsent(event.target.checked)} className="mt-1" />

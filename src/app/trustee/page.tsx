@@ -11,10 +11,10 @@ export default async function TrusteePage() {
 
   return (
     <AppShell user={user}>
-      <div>
+      <header className="page-heading">
         <h1>Trust board</h1>
-        <p className="mt-1 text-sm text-slate-600">Batch decisions, budget visibility and automated award letters.</p>
-      </div>
+        <p className="page-lede">Batch decisions, budget visibility and automated award letters.</p>
+      </header>
       <Card title="Budget overview" description="Committed amounts update on approval; paid amounts update when finance records payments.">
         <BudgetTiles tiles={tiles} />
       </Card>

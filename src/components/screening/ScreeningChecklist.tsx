@@ -38,7 +38,7 @@ export function ScreeningChecklist({ applicationId, stream }: { applicationId: s
       <form onSubmit={submit} className="space-y-4">
         {error && <Alert tone="red">{error}</Alert>}
         {items.map((item) => (
-          <div key={item.key} className="border border-[var(--line)] p-3">
+          <div key={item.key} className="border border-line p-3">
             <label className="flex items-center gap-2 text-sm">
               <input
                 type="checkbox"

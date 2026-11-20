@@ -104,7 +104,7 @@ export function OtpLoginForm({ next }: { next?: string }) {
           </Button>
           <button
             type="button"
-            className="w-full text-sm text-brand-700 transition hover:text-navy hover:underline"
+            className="w-full text-sm text-brand transition hover:text-ink hover:underline"
             onClick={() => {
               setStep('request');
               setCode('');

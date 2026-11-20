@@ -33,15 +33,15 @@ export default async function FinancePage() {
 
   return (
     <AppShell user={user}>
-      <div>
+      <header className="page-heading">
         <h1>Finance</h1>
-        <p className="mt-1 text-sm text-slate-600">Payment ledger against Trinity College fee invoices.</p>
-      </div>
+        <p className="page-lede">Payment ledger against Trinity College fee invoices.</p>
+      </header>
       <div className="grid gap-4 sm:grid-cols-3">
         {tiles.map((tile) => (
           <Card key={tile.stream} title={tile.stream === 'OLD_TINITIAN_SUPPORT' ? 'Stream A' : 'Stream B'}>
-            <p className="text-2xl font-semibold">{formatMoney(tile.available)}</p>
-            <p className="text-xs text-slate-500">Available of {formatMoney(tile.budget)} budget</p>
+            <p className="numeric text-2xl font-semibold">{formatMoney(tile.available)}</p>
+            <p className="text-xs text-muted">Available of {formatMoney(tile.budget)} budget</p>
           </Card>
         ))}
       </div>
@@ -49,10 +49,10 @@ export default async function FinancePage() {
         <Card title="Accepted awards awaiting activation">
           <div className="space-y-3">
             {accepted.map((application) => (
-              <div key={application.id} className="flex flex-wrap items-center justify-between gap-3 border border-[var(--line)] p-3">
+              <div key={application.id} className="flex flex-wrap items-center justify-between gap-3 border border-line p-3">
                 <div>
                   <p className="text-sm font-medium">{application.referenceNo} · {application.child.fullName}</p>
-                  <p className="text-xs text-slate-500">Approved {formatMoney(application.trusteeDecision?.approvedAmount ?? 0)}</p>
+                  <p className="text-xs text-muted">Approved {formatMoney(application.trusteeDecision?.approvedAmount ?? 0)}</p>
                 </div>
                 <ActivateAwardButton
                   applicationId={application.id}

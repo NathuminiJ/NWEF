@@ -87,7 +87,7 @@ export function BatchApprovalQueue({ items }: { items: QueueItem[] }) {
                   <tr key={item.id}>
                     <td><input type="checkbox" checked={selected.includes(item.id)} onChange={() => toggle(item.id)} /></td>
                     <td className="font-medium">{item.referenceNo}</td>
-                    <td>{item.child.fullName}<br /><span className="text-xs text-slate-500">{item.child.school}</span></td>
+                    <td>{item.child.fullName}<br /><span className="text-xs text-muted">{item.child.school}</span></td>
                     <td>{average.toFixed(2)} / 5 · {item.scores.length} score(s)</td>
                     <td><Badge tone="blue">{item.status.replaceAll('_', ' ')}</Badge></td>
                   </tr>
@@ -96,11 +96,11 @@ export function BatchApprovalQueue({ items }: { items: QueueItem[] }) {
             </tbody>
           </table>
         </div>
-        {items.length === 0 && <p className="text-sm text-slate-500">No applications are awaiting a trustee decision.</p>}
+        {items.length === 0 && <p className="text-sm text-muted">No applications are awaiting a trustee decision.</p>}
         <Button type="submit" disabled={selected.length === 0 || busy || (decision === 'APPROVE' && !amount)}>
           {busy ? 'Recording decisions…' : `Record ${selected.length} decision(s)`}
         </Button>
-        <p className="text-xs text-slate-500">Batch ID is generated per submission and stored on each decision record.</p>
+        <p className="text-xs text-muted">Batch ID is generated per submission and stored on each decision record.</p>
       </form>
     </Card>
   );

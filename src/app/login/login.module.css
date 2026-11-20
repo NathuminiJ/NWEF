@@ -1,164 +1,100 @@
-@keyframes login-orbit {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) rotate(0deg);
-  }
-  50% {
-    transform: translate3d(0, 14px, 0) rotate(4deg);
-  }
-}
-
-@keyframes login-reveal {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .page {
   min-height: 100svh;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  background:
-    radial-gradient(circle at 92% 8%, rgba(184, 150, 91, 0.08), transparent 24rem),
-    var(--cream);
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  background: var(--canvas);
 }
 
 .brandPanel {
-  position: relative;
-  min-height: 100svh;
-  padding: clamp(2rem, 5vw, 4.5rem);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 4rem;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 12% 12%, rgba(184, 150, 91, 0.14), transparent 30rem),
-    var(--navy);
-  color: #fff;
-}
-
-.brandPanel::before {
-  content: '';
-  position: absolute;
-  width: 34rem;
-  height: 34rem;
-  right: -16rem;
-  bottom: -14rem;
-  border: 1px solid rgba(184, 150, 91, 0.25);
-  border-radius: 50%;
-  animation: login-orbit 16s ease-in-out infinite;
-  pointer-events: none;
-}
-
-.brandPanel::after {
-  content: '';
-  position: absolute;
-  width: 22rem;
-  height: 22rem;
-  top: -11rem;
-  left: -9rem;
-  border: 1px solid rgba(184, 150, 91, 0.14);
-  border-radius: 50%;
-  pointer-events: none;
+  gap: clamp(3rem, 8vw, 7rem);
+  padding: clamp(2rem, 5vw, 4.5rem);
+  border-right: 1px solid var(--line);
+  background: var(--surface);
 }
 
 .brand {
-  position: relative;
-  z-index: 1;
   display: inline-flex;
   align-items: center;
-  gap: 0.9rem;
-  color: #fff;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
+  gap: 0.85rem;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
   text-decoration: none;
   text-transform: uppercase;
-  transition: color 180ms ease, gap 180ms ease;
+  white-space: nowrap;
+  transition: color 160ms ease;
 }
 
 .brand:hover {
-  gap: 1.1rem;
-  color: var(--gold);
+  color: var(--brand);
 }
 
 .brandMark {
   display: grid;
-  width: 2.7rem;
-  height: 2.7rem;
+  width: 2.6rem;
+  height: 2.6rem;
   place-items: center;
-  border: 1px solid var(--gold);
-  border-radius: 50%;
-  color: var(--gold);
+  border: 1px solid var(--brass);
+  border-radius: 2px;
+  color: var(--brand);
   font-family: var(--serif);
-  font-size: 0.88rem;
-  letter-spacing: 0.05em;
-  transition: transform 260ms ease, background 260ms ease;
-}
-
-.brand:hover .brandMark {
-  background: rgba(184, 150, 91, 0.14);
-  transform: rotate(-8deg);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
 }
 
 .brandCopy {
-  position: relative;
-  z-index: 1;
   max-width: 34rem;
-  animation: login-reveal 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .eyebrow {
-  margin: 0 0 1.5rem;
-  color: var(--gold);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.24em;
+  margin: 0 0 1.25rem;
+  color: var(--brass);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  line-height: 1.4;
   text-transform: uppercase;
 }
 
 .title {
   margin: 0;
+  color: var(--ink);
   font-family: var(--serif);
-  font-size: clamp(3rem, 5.5vw, 5.5rem);
+  font-size: clamp(2.8rem, 5vw, 4.8rem);
   font-weight: 400;
-  letter-spacing: -0.045em;
-  line-height: 0.95;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
   text-wrap: balance;
 }
 
 .description {
-  max-width: 30rem;
-  margin: 2rem 0 0;
-  color: rgba(255, 255, 255, 0.66);
+  max-width: 32rem;
+  margin: 1.75rem 0 0;
+  color: var(--muted);
   font-size: 1rem;
-  line-height: 1.8;
+  line-height: 1.75;
   text-wrap: pretty;
 }
 
 .quote {
-  position: relative;
-  z-index: 1;
   margin: 0;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(184, 150, 91, 0.5);
-  color: rgba(255, 255, 255, 0.75);
+  padding: 1.6rem 0;
+  border-top: 1px solid var(--brass);
+  border-bottom: 1px solid var(--brass);
+  color: var(--ink);
   font-family: var(--serif);
-  font-size: 1.25rem;
+  font-size: clamp(1.25rem, 1.8vw, 1.6rem);
   font-style: italic;
-  line-height: 1.5;
-  transition: border-color 220ms ease, color 220ms ease;
-}
-
-.quote:hover {
-  border-color: var(--gold);
-  color: #fff;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.4;
+  text-wrap: balance;
 }
 
 .formPanel {
@@ -166,91 +102,72 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  gap: 2rem;
+  gap: 1.75rem;
   padding: clamp(2rem, 5vw, 5rem);
 }
 
 .backLink {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  color: var(--gold-dark);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
+  gap: 0.6rem;
+  color: var(--brand);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   text-decoration: none;
   text-transform: uppercase;
-  transition: color 180ms ease, gap 180ms ease;
+  transition: color 160ms ease, gap 160ms ease;
 }
 
 .backLink:hover {
-  gap: 0.8rem;
-  color: var(--navy);
+  gap: 0.9rem;
+  color: var(--ink);
 }
 
 .card {
-  position: relative;
-  width: min(100%, 30rem);
-  border: 1px solid var(--line);
-  background: #fff;
-  padding: clamp(1.5rem, 3vw, 2.5rem);
-  box-shadow: 0 24px 60px rgba(19, 35, 47, 0.08);
-  animation: login-reveal 800ms 80ms cubic-bezier(0.22, 1, 0.36, 1) both;
-  transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-  top: -1px;
-  left: -1px;
-  width: 3.5rem;
-  height: 2px;
-  background: var(--gold);
-}
-
-.card:hover {
-  border-color: rgba(143, 108, 52, 0.3);
-  box-shadow: 0 28px 70px rgba(19, 35, 47, 0.12);
-  transform: translateY(-2px);
-}
-
-.card:focus-within {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 4px var(--gold-soft), 0 28px 70px rgba(19, 35, 47, 0.12);
+  width: min(100%, 32rem);
+  padding: 2rem 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: transparent;
 }
 
 .cardEyebrow {
   margin: 0 0 0.75rem;
-  color: var(--gold-dark);
-  font-size: 0.66rem;
-  font-weight: 700;
-  letter-spacing: 0.24em;
+  color: var(--brass);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  line-height: 1.4;
   text-transform: uppercase;
 }
 
 .cardTitle {
   margin: 0;
+  color: var(--ink);
   font-family: var(--serif);
-  font-size: 2.5rem;
+  font-size: clamp(2rem, 3vw, 2.6rem);
   font-weight: 400;
-  letter-spacing: -0.03em;
-  text-wrap: balance;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
 }
 
 .cardDescription {
-  margin: 0.75rem 0 2rem;
-  color: var(--slate);
-  font-size: 0.9rem;
+  max-width: 34rem;
+  margin: 0.85rem 0 2rem;
+  color: var(--muted);
+  font-size: 0.95rem;
   line-height: 1.7;
   text-wrap: pretty;
 }
 
 .notice {
-  max-width: 30rem;
+  max-width: 32rem;
   margin: 0;
-  color: var(--slate);
-  font-size: 0.7rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.72rem;
   line-height: 1.7;
 }
 
@@ -260,24 +177,15 @@
   }
 
   .brandPanel {
-    min-height: 22rem;
-    gap: 2rem;
+    min-height: 0;
+    gap: 3rem;
     padding-block: 3rem;
-  }
-
-  .brandPanel::before {
-    width: 26rem;
-    height: 26rem;
-    right: -14rem;
-    bottom: -12rem;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
   }
 
   .title {
-    font-size: clamp(2.6rem, 10vw, 4rem);
-  }
-
-  .description {
-    margin-top: 1rem;
+    font-size: clamp(2.6rem, 9vw, 4rem);
   }
 
   .formPanel {
@@ -285,7 +193,6 @@
     padding-block: 3rem;
   }
 
-  .backLink,
   .notice {
     align-self: flex-start;
   }
@@ -293,16 +200,25 @@
 
 @media (max-width: 480px) {
   .brandPanel {
-    min-height: 18rem;
+    gap: 2.25rem;
     padding: 1.75rem;
   }
 
+  .brand {
+    font-size: 0.8rem;
+  }
+
+  .brandMark {
+    width: 2.3rem;
+    height: 2.3rem;
+  }
+
   .title {
-    font-size: clamp(2.4rem, 12vw, 3.4rem);
+    font-size: clamp(2.4rem, 11vw, 3.4rem);
   }
 
   .description {
-    font-size: 0.9rem;
+    font-size: 0.92rem;
   }
 
   .formPanel {
@@ -311,23 +227,6 @@
   }
 
   .card {
-    padding: 1.5rem;
-  }
-
-  .cardTitle {
-    font-size: 2.1rem;
-  }
-
-  .notice {
-    font-size: 0.66rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .brandPanel::before,
-  .brandPanel::after,
-  .brandCopy,
-  .card {
-    animation: none;
+    padding-block: 1.5rem;
   }
 }

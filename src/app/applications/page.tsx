@@ -21,17 +21,17 @@ export default async function ApplicationsPage() {
 
   return (
     <AppShell user={user}>
-      <div className="flex items-center justify-between gap-4">
+      <header className="page-heading flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1>Applications</h1>
-          <p className="mt-1 text-sm text-slate-600">Track progress, respond to requests and manage awards.</p>
+          <p className="page-lede">Track progress, respond to requests and manage awards.</p>
         </div>
         {user.role === 'APPLICANT' && (
           <Link className="btn" href="/apply">
             New application
           </Link>
         )}
-      </div>
+      </header>
       <Card>
         {items.length === 0 ? (
           <EmptyState title="No applications yet" message="Start a new application to see it here." />
@@ -54,7 +54,7 @@ export default async function ApplicationsPage() {
                   return (
                     <tr key={application.id}>
                       <td>
-                        <Link className="font-medium text-brand-600 hover:underline" href={`/applications/${application.id}`}>
+                        <Link className="font-medium text-brand hover:underline" href={`/applications/${application.id}`}>
                           {application.referenceNo}
                         </Link>
                       </td>
@@ -62,7 +62,7 @@ export default async function ApplicationsPage() {
                       <td>{application.stream === 'OLD_TINITIAN_SUPPORT' ? 'Stream A' : 'Stream B'}</td>
                       <td><Badge tone="blue">{STATUS_LABELS[application.status]}</Badge></td>
                       <td><Badge tone={tone(sla.flag)}>{slaLabel(sla.flag)}</Badge></td>
-                      <td className="text-slate-500">{formatDate(application.updatedAt)}</td>
+                      <td className="text-muted">{formatDate(application.updatedAt)}</td>
                     </tr>
                   );
                 })}

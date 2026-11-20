@@ -3,7 +3,7 @@ import { formatMoney } from '@/lib/utils';
 import type { BudgetTile } from '@/lib/budget';
 
 export function BudgetTiles({ tiles }: { tiles: BudgetTile[] }) {
-  if (tiles.length === 0) return <p className="text-sm text-slate-500">No budget envelopes configured for this year.</p>;
+  if (tiles.length === 0) return <p className="text-sm text-muted">No budget envelopes configured for this year.</p>;
   return (
     <div className="grid gap-4 md:grid-cols-2">
       {tiles.map((tile) => (

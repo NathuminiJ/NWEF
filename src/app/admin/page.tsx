@@ -15,10 +15,10 @@ export default async function AdminOverviewPage() {
 
   return (
     <AppShell user={user}>
-      <div>
+      <header className="page-heading">
         <h1>Admin console</h1>
-        <p className="mt-1 text-sm text-slate-600">Screening turnaround, SLA flags and interview operations.</p>
-      </div>
+        <p className="page-lede">Screening turnaround, SLA flags and interview operations.</p>
+      </header>
       <div className="grid gap-4 sm:grid-cols-4">
         <Stat label="Open screenings" value={String(report.length)} />
         <Stat label="Overdue" value={String(overdue)} />
@@ -35,7 +35,7 @@ export default async function AdminOverviewPage() {
               <tbody>
                 {report.map((item) => (
                   <tr key={item.id}>
-                    <td><a className="text-brand-600 hover:underline" href={`/applications/${item.id}`}>{item.referenceNo}</a></td>
+                    <td><a className="text-brand hover:underline" href={`/applications/${item.id}`}>{item.referenceNo}</a></td>
                     <td>{item.status.replaceAll('_', ' ')}</td>
                     <td>{formatDate(item.sla.effectiveDueAt)}</td>
                     <td><Badge tone={item.sla.flag === 'OVERDUE' ? 'red' : item.sla.flag === 'DUE_SOON' ? 'amber' : 'slate'}>{item.label}</Badge></td>
@@ -50,7 +50,7 @@ export default async function AdminOverviewPage() {
       <Card title="Published interview sessions" description={`${sessions.length} session(s) available for self-booking.`}>
         <ul className="space-y-2 text-sm">
           {sessions.map((session) => (
-            <li key={session.id} className="bg-cream px-3 py-2">
+            <li key={session.id} className="bg-surface px-3 py-2">
               <strong>{session.title}</strong> · {session.slots.length} slot(s) · {session.location ?? session.mode}
             </li>
           ))}

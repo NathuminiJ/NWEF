@@ -55,7 +55,7 @@ export function NewApplicationForm() {
         {streams.map((item) => (
           <label
             key={item.value}
-            className={`cursor-pointer border p-4 ${stream === item.value ? 'border-brand-500 bg-brand-50' : 'border-[var(--line)] bg-white'}`}
+            className={`cursor-pointer border p-4 ${stream === item.value ? 'border-brand bg-surface' : 'border-line bg-canvas'}`}
           >
             <input
               type="radio"
@@ -66,7 +66,7 @@ export function NewApplicationForm() {
               onChange={() => setStream(item.value)}
             />
             <span className="font-medium">{item.title}</span>
-            <p className="mt-2 text-sm text-slate-600">{item.description}</p>
+            <p className="mt-2 text-sm text-muted">{item.description}</p>
           </label>
         ))}
       </div>
@@ -78,7 +78,7 @@ export function NewApplicationForm() {
       <Button type="submit" disabled={busy || childName.trim().length < 2}>
         {busy ? 'Creating…' : 'Start application'}
       </Button>
-      <p className="text-xs text-slate-500">You can complete all remaining details in the next step. Drafts save automatically.</p>
+      <p className="text-xs text-muted">You can complete all remaining details in the next step. Drafts save automatically.</p>
     </form>
   );
 }

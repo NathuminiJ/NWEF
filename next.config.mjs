@@ -19,6 +19,14 @@ const nextConfig = {
   distDir: buildDirectory,
   reactStrictMode: true,
   poweredByHeader: false,
+  // PDFKit resolves its standard AFM font metrics relative to its own module
+  // directory. Leaving it unbundled keeps that path stable in the Vercel
+  // serverless runtime; outputFileTracingIncludes makes sure the metrics travel
+  // with the function.
+  serverExternalPackages: ['pdfkit'],
+  outputFileTracingIncludes: {
+    '/*': ['./node_modules/pdfkit/js/data/*.afm'],
+  },
   images: {
     remotePatterns: [{ protocol: 'https', hostname: 'www.eastwest.lk', pathname: '/images/**' }],
   },

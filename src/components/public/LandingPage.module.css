@@ -580,8 +580,7 @@
   transition: color 160ms ease, gap 160ms ease;
 }
 
-.streamLink svg,
-.guideLink svg {
+.streamLink svg {
   width: 1rem;
   flex: none;
   fill: none;
@@ -620,44 +619,6 @@
 
 .processTitle {
   font-size: clamp(1.2rem, 1.8vw, 1.6rem);
-}
-
-.guide {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: clamp(2rem, 5vw, 5rem);
-  padding: clamp(4rem, 8vw, 6.5rem) clamp(1.5rem, 6vw, 6rem);
-  border-bottom: 1px solid var(--line);
-  background: var(--canvas);
-}
-
-.guideContent {
-  max-width: 46rem;
-}
-
-.guideLink {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.8rem;
-  flex: none;
-  border: 1px solid var(--brass);
-  border-radius: 2px;
-  padding: 1rem 1.4rem;
-  color: var(--brand);
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-decoration: none;
-  text-transform: uppercase;
-  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
-}
-
-.guideLink:hover {
-  border-color: var(--brand);
-  background: var(--brand);
-  color: var(--canvas);
 }
 
 @media (max-width: 900px) {
@@ -699,11 +660,6 @@
 
   .processStep:nth-child(n + 3) {
     border-top: 1px solid var(--line);
-  }
-
-  .guide {
-    flex-direction: column;
-    align-items: flex-start;
   }
 }
 

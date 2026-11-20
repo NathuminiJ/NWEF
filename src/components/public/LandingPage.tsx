@@ -195,21 +195,6 @@ export function LandingPage() {
           </div>
         </section>
 
-        <section className={styles.guide} id="portal-guide">
-          <div className={styles.guideContent}>
-            <p className={styles.eyebrow}>The complete reference</p>
-            <h2 className={styles.sectionTitle}>The whole portal, in one PDF.</h2>
-            <p className={styles.sectionDescription}>
-              A concise guide to the editorial design system, both scholarship streams, every role and workflow stage,
-              applicant and staff features, security, compliance and deployment.
-            </p>
-          </div>
-          <Link className={styles.guideLink} href="/api/portal-guide" download="NWEF-Portal-Guide.pdf">
-            Download the portal guide
-            <ArrowIcon />
-          </Link>
-        </section>
-
         <footer className={styles.footer}>
           <Link className={`${styles.brand} ${styles.footerBrand}`} href="#home">
             <span className={styles.brandMark}>NW</span>
@@ -219,7 +204,6 @@ export function LandingPage() {
           <div className={styles.footerLinks}>
             <Link href={applyHref}>Apply now</Link>
             <Link href="/login">Portal sign in</Link>
-            <Link href="/api/portal-guide">Portal guide (PDF)</Link>
             <Link href="#home">Back to top ↑</Link>
           </div>
         </footer>

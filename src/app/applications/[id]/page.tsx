@@ -42,9 +42,6 @@ export default async function ApplicationDetailPage({ params }: { params: Promis
             </p>
           </div>
           <div className="flex flex-col items-end gap-2">
-            <a className="btn-secondary" href={`/api/applications/${id}/summary-pdf`}>
-              Download PDF
-            </a>
             <Badge tone="blue">{STATUS_LABELS[application.status]}</Badge>
             <Badge tone={sla.flag === 'OVERDUE' ? 'red' : sla.flag === 'DUE_SOON' ? 'amber' : 'slate'}>{slaLabel(sla.flag)}</Badge>
           </div>

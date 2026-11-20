@@ -4,23 +4,33 @@
 
 /* ── Institutional Editorial design tokens ─────────────────────────────── */
 :root {
-  --canvas: #f9f8f4;
-  --surface: #f1efea;
-  --ink: #181a18;
-  --muted: #545854;
-  --brand: #1b3b2b;
-  --brand-hover: #12291e;
-  --brass: #9a7b3e;
-  --line: #dfddd6;
+  /* Core palette — navy base, yellow action, red accent. */
+  --navy-base: #041f4a;
+  --yellow-base: #f7da40;
+  --red-base: #ef2636;
+
+  --canvas: #f5f7fc;
+  --surface: #e9edf7;
+  --ink: var(--navy-base);
+  --muted: #4a5a79;
+  --brand: var(--navy-base);
+  --brand-hover: #0b2d5e;
+  --accent: var(--yellow-base);
+  --accent-hover: #e6c82d;
+  --accent-text: #8a6c00;
+  --danger: var(--red-base);
+  --danger-hover: #d41f2e;
+  --line: #cdd5e5;
 
   /* Legacy aliases keep existing call sites coherent while the palette shifts. */
   --cream: var(--canvas);
   --cream-deep: var(--surface);
-  --navy: var(--ink);
+  --navy: var(--brand);
   --slate: var(--muted);
-  --gold: var(--brass);
-  --gold-dark: var(--brass);
-  --gold-soft: rgba(154, 123, 62, 0.12);
+  --brass: var(--accent-text);
+  --gold: var(--accent);
+  --gold-dark: var(--accent-hover);
+  --gold-soft: rgba(247, 218, 64, 0.18);
 
   --sans: var(--font-plus-jakarta-sans), ui-sans-serif, system-ui, sans-serif;
   --serif: var(--font-newsreader), Georgia, 'Times New Roman', serif;
@@ -46,7 +56,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    scrollbar-color: var(--brass) transparent;
+    scrollbar-color: var(--brand) transparent;
     scrollbar-width: thin;
   }
 
@@ -111,13 +121,13 @@
   input:focus-visible,
   select:focus-visible,
   textarea:focus-visible {
-    outline: 2px solid var(--brass);
+    outline: 2px solid var(--brand);
     outline-offset: 3px;
   }
 
   ::selection {
-    background: var(--brand);
-    color: var(--canvas);
+    background: var(--accent);
+    color: var(--brand);
   }
 }
 
@@ -234,18 +244,18 @@
   }
 
   .badge-success {
-    border-color: rgba(27, 59, 43, 0.45);
+    border-color: rgba(4, 31, 74, 0.45);
     color: var(--brand);
   }
 
   .badge-warning {
-    border-color: rgba(154, 123, 62, 0.55);
-    color: var(--brass);
+    border-color: rgba(138, 108, 0, 0.55);
+    color: var(--accent-text);
   }
 
   .badge-danger {
-    border-color: rgba(127, 48, 40, 0.5);
-    color: #7f3028;
+    border-color: rgba(239, 38, 54, 0.5);
+    color: var(--danger);
   }
 
   .field-label,
@@ -311,35 +321,37 @@
   }
 
   .btn {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--brand);
+  }
+
+  .btn:hover:not(:disabled) {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+  }
+
+  .btn-secondary {
+    border-color: var(--brand);
+    background: transparent;
+    color: var(--brand);
+  }
+
+  .btn-secondary:hover:not(:disabled) {
+    border-color: var(--brand);
     background: var(--brand);
     color: var(--canvas);
   }
 
-  .btn:hover:not(:disabled) {
-    background: var(--brand-hover);
-    border-color: var(--brand-hover);
-  }
-
-  .btn-secondary {
-    border-color: var(--line);
-    background: transparent;
-    color: var(--ink);
-  }
-
-  .btn-secondary:hover:not(:disabled) {
-    border-color: var(--brass);
-    background: var(--surface);
-  }
-
   .btn-danger {
-    border-color: #7f3028;
-    background: #7f3028;
-    color: var(--canvas);
+    border-color: var(--danger);
+    background: var(--danger);
+    color: #ffffff;
   }
 
   .btn-danger:hover:not(:disabled) {
-    background: #65251f;
-    border-color: #65251f;
+    background: var(--danger-hover);
+    border-color: var(--danger-hover);
   }
 
   .btn:disabled,
@@ -362,7 +374,7 @@
     margin: 0;
     padding: 1rem 1.1rem;
     border: 1px solid var(--line);
-    border-left: 3px solid var(--brass);
+    border-left: 3px solid var(--accent);
     border-radius: 2px;
     background: var(--surface);
     color: var(--ink);
@@ -384,7 +396,7 @@
   }
 
   .alert-danger {
-    border-left-color: #7f3028;
+    border-left-color: var(--danger);
   }
 
   .stat {

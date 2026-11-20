@@ -2,11 +2,12 @@ import PDFDocument from 'pdfkit';
 import { config } from './config';
 import { formatDate, formatMoney } from './utils';
 
-const INK = '#181A18';
-const MUTED = '#545854';
-const BRAND = '#1B3B2B';
-const BRASS = '#9A7B3E';
-const LINE = '#DFDDD6';
+const INK = '#041F4A';
+const MUTED = '#4A5A79';
+const BRAND = '#041F4A';
+const BRASS = '#EF2636';
+const YELLOW = '#F7DA40';
+const LINE = '#CDD5E5';
 const LEFT = 56;
 const RIGHT = 539;
 const WIDTH = RIGHT - LEFT;
@@ -262,7 +263,7 @@ export function generatePortalGuidePdf(): Promise<Buffer> {
   const done = bufferFrom(doc);
 
   let y = 58;
-  drawRule(doc, 40, BRASS);
+  doc.save().lineWidth(3).strokeColor(YELLOW).moveTo(LEFT, 40).lineTo(RIGHT, 40).stroke().restore();
   doc.font('Times-Bold').fontSize(10).fillColor(BRASS).text('ENG. NAHIL WIJESURIYA FIMAREST ENDOWMENT FUND', LEFT, 52, {
     width: WIDTH,
     align: 'center',
@@ -289,12 +290,12 @@ export function generatePortalGuidePdf(): Promise<Buffer> {
         'The interface is built as a calm institutional publication rather than a conventional SaaS dashboard. Hairline dividers, two-pixel corners, generous margins and left-aligned editorial headings carry the hierarchy.',
       ],
       bullets: [
-        'Canvas #F9F8F4 · Surface #F1EFEA · Ink #181A18 · Muted #545854.',
-        'Brand green #1B3B2B with hover #12291E · Brass #9A7B3E · Hairline #DFDDD6.',
+        'Navy #041F4A is the base for text, links and dark elements; yellow #F7DA40 is the primary action colour; red #EF2636 marks accents and urgent states.',
+        'Canvas #F5F7FC · Surface #E9EDF7 · Muted #4A5A79 · Hairline #CDD5E5.',
         'Newsreader 400/500 and italic for headings and pull-quotes; Plus Jakarta Sans 400/500/600 for body and UI.',
         'Headings use weight 400, -0.02em tracking and 1.15 line-height. Body copy is 16–18px at 1.65 line-height with a 65ch measure.',
         'Money, dates and metrics use tabular figures. No shadows, gradients, SaaS blue/purple, large radii or floating card grids.',
-        'Sections use 80–112px vertical rhythm, asymmetric 60/40 hero composition, framed portrait with caption, and italic pull-quotes ruled in brass.',
+        'Sections use 80–112px vertical rhythm, asymmetric 60/40 hero composition, framed portrait with caption, and italic pull-quotes ruled in red.',
       ],
     },
     {

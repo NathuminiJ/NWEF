@@ -103,7 +103,7 @@ export const WORKFLOW_TRANSITIONS: TransitionDefinition[] = [
   },
   {
     action: 'SHORTLIST',
-    description: 'Screening outcome: eligible for interview',
+    description: 'Screening outcome: selected for interview',
     from: ['UNDER_SCREENING'],
     to: 'SHORTLISTED',
     roles: SCREENERS,
@@ -113,7 +113,7 @@ export const WORKFLOW_TRANSITIONS: TransitionDefinition[] = [
   },
   {
     action: 'MARK_NOT_ELIGIBLE',
-    description: 'Screening outcome: not eligible',
+    description: 'Screening outcome: not shortlisted',
     from: ['UNDER_SCREENING'],
     to: 'NOT_ELIGIBLE',
     roles: SCREENERS,
@@ -237,7 +237,7 @@ export const STATUS_LABELS: Record<ApplicationStatus, string> = {
   UNDER_SCREENING: 'Under screening',
   INFO_REQUESTED: 'Info requested',
   SHORTLISTED: 'Shortlisted',
-  NOT_ELIGIBLE: 'Not eligible',
+  NOT_ELIGIBLE: 'Not shortlisted',
   INTERVIEW_SCHEDULED: 'Interview scheduled',
   INTERVIEWED: 'Interviewed',
   RECOMMENDED: 'Recommended',

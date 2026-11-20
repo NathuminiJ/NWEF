@@ -28,11 +28,13 @@ All endpoints return `{ success: true, data }` on success and
 | POST | `/api/applications/:id/info-request` | Admin/Reviewer | Pauses SLA clock |
 | POST | `/api/applications/:id/info-response` | Applicant/Admin | Resumes SLA clock |
 | POST | `/api/applications/:id/interview-booking` | Applicant | `{ slotId }`; capacity checked atomically |
-| POST | `/api/applications/:id/screening` | Admin/Reviewer | Checklist + outcome → shortlist / not eligible |
+| POST | `/api/applications/:id/screening` | Admin/Reviewer | Checklist + outcome → shortlist / not shortlisted |
 | GET / POST | `/api/applications/:id/scores` | Panel/Admin | Independent weighted scorecards |
 | POST | `/api/applications/:id/interview/attended` | Admin/Panel | INTERVIEW_SCHEDULED → INTERVIEWED |
 | POST | `/api/applications/:id/trustee-decision` | Trustee | Approve/waitlist/decline; generates award letter on approve |
 | GET | `/api/applications/:id/award-letter` | Scoped | PDF stream with audit |
+| GET | `/api/applications/:id/summary-pdf` | Scoped | Application summary PDF with audit |
+| GET | `/api/portal-guide` | Public | Full design/functionality reference PDF |
 | POST | `/api/applications/:id/accept-award` | Applicant | Typed/drawn signature + consent |
 | POST | `/api/applications/:id/activate-award` | Finance | Creates instalments → ACTIVE_AWARD |
 | POST | `/api/applications/:id/renewal` | Applicant/Admin | Opens next-year application |

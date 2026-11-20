@@ -44,6 +44,7 @@ export default async function EditApplicationPage({ params }: { params: Promise<
                 dateOfBirth: detail.child.dateOfBirth.toISOString(),
                 school: detail.child.school,
                 grade: detail.child.grade,
+                house: detail.child.house,
                 gender: detail.child.gender,
               },
               guardian,

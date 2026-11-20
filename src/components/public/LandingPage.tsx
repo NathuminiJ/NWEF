@@ -3,6 +3,7 @@ import Link from 'next/link';
 import styles from './LandingPage.module.css';
 
 const portraitUrl = 'https://www.eastwest.lk/images/nahil-wijesuriya.jpg';
+const applyHref = '/login?next=%2Fapply';
 
 function ArrowIcon() {
   return (
@@ -32,12 +33,16 @@ export function LandingPage() {
               <Link className={styles.portalLink} href="/login">
                 Scholarship portal
               </Link>
+              <Link className={styles.navApply} href={applyHref}>
+                Apply now
+                <ArrowIcon />
+              </Link>
             </div>
           </nav>
 
           <div className={styles.heroContent}>
             <div className={styles.heroCopy}>
-              <p className={styles.eyebrow}>A legacy of vision and service</p>
+              <p className={styles.eyebrow}>Applications open — Stream A &amp; Stream B</p>
               <h1 className={styles.heroTitle}>
                 Eng. Nahil
                 <br />
@@ -48,14 +53,18 @@ export function LandingPage() {
                 promise of future generations.
               </p>
               <div className={styles.heroActions}>
-                <Link className={styles.primaryLink} href="#purpose">
-                  Discover the fund
+                <Link className={styles.primaryLink} href={applyHref}>
+                  Apply for a scholarship
                   <ArrowIcon />
                 </Link>
-                <Link className={styles.secondaryLink} href="/login?next=%2Fapply">
-                  Apply for a scholarship
+                <Link className={styles.secondaryLink} href="#purpose">
+                  Discover the fund
                 </Link>
               </div>
+              <p className={styles.heroNote}>
+                <span aria-hidden="true">01</span> Choose a stream <span aria-hidden="true">02</span> Complete the guided form{' '}
+                <span aria-hidden="true">03</span> Track every step
+              </p>
             </div>
 
             <div className={styles.portraitWrap}>
@@ -85,6 +94,11 @@ export function LandingPage() {
           </Link>
         </section>
 
+        <Link className={styles.mobileApplyBar} href={applyHref}>
+          Apply for a scholarship
+          <ArrowIcon />
+        </Link>
+
         <section className={styles.purpose} id="purpose">
           <div className={styles.sectionNumber} aria-hidden="true">
             01
@@ -96,7 +110,7 @@ export function LandingPage() {
               The Eng. Nahil Wijesuriya FIMarEST Endowment Fund carries forward an enduring commitment to education,
               innovation, and meaningful progress. It exists to help ideas and people reach their fullest potential.
             </p>
-            <Link className={styles.purposeLink} href="/login?next=%2Fapply">
+            <Link className={styles.purposeLink} href={applyHref}>
               Start an application
               <ArrowIcon />
             </Link>
@@ -107,6 +121,95 @@ export function LandingPage() {
           </blockquote>
         </section>
 
+        <section className={styles.streams} id="streams">
+          <div className={styles.sectionNumber} aria-hidden="true">
+            02
+          </div>
+          <div className={styles.streamsContent}>
+            <p className={styles.eyebrow}>Two scholarship streams</p>
+            <h2 className={styles.sectionTitle}>One fund. Two clear pathways.</h2>
+            <p className={styles.sectionDescription}>
+              Choose the stream that fits the application. You can review and change every detail before you submit.
+            </p>
+
+            <div className={styles.streamList}>
+              <article className={styles.streamRow}>
+                <p className={styles.streamIndex} aria-hidden="true">
+                  A
+                </p>
+                <div>
+                  <h3 className={styles.streamTitle}>Old Trinitian Support</h3>
+                  <p className={styles.streamText}>
+                    Parent/guardian supported applications. No income, salary or employment evidence is requested.
+                  </p>
+                </div>
+                <Link className={styles.streamLink} href={applyHref}>
+                  Apply under Stream A
+                  <ArrowIcon />
+                </Link>
+              </article>
+              <article className={styles.streamRow}>
+                <p className={styles.streamIndex} aria-hidden="true">
+                  B
+                </p>
+                <div>
+                  <h3 className={styles.streamTitle}>Sports Scholarship</h3>
+                  <p className={styles.streamText}>
+                    For athletes recruited on sporting ability, with results, level and coach details captured in the form.
+                  </p>
+                </div>
+                <Link className={styles.streamLink} href={applyHref}>
+                  Apply under Stream B
+                  <ArrowIcon />
+                </Link>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section className={styles.process} id="how-it-works">
+          <div className={styles.sectionNumber} aria-hidden="true">
+            03
+          </div>
+          <div className={styles.processContent}>
+            <p className={styles.eyebrow}>The application journey</p>
+            <h2 className={styles.sectionTitle}>From first draft to active award.</h2>
+            <p className={styles.sectionDescription}>
+              Every stage is recorded, time-stamped and visible to the applicant. The portal keeps the process moving.
+            </p>
+
+            <div className={styles.processGrid}>
+              {[
+                ['01', 'Apply', 'Sign in with your mobile number, choose a stream and enter the child’s grade and Trinity house.'],
+                ['02', 'Review', 'The screening team checks the record and requests information only when it is needed.'],
+                ['03', 'Interview', 'Shortlisted applicants choose an available panel slot and the panel scores each criterion.'],
+                ['04', 'Award', 'Trustees decide, finance issues the award letter, and payments are tracked against college invoices.'],
+              ].map(([number, title, text]) => (
+                <div className={styles.processStep} key={number}>
+                  <p className={styles.processNumber}>{number}</p>
+                  <h3 className={styles.processTitle}>{title}</h3>
+                  <p className={styles.processText}>{text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className={styles.guide} id="portal-guide">
+          <div className={styles.guideContent}>
+            <p className={styles.eyebrow}>The complete reference</p>
+            <h2 className={styles.sectionTitle}>The whole portal, in one PDF.</h2>
+            <p className={styles.sectionDescription}>
+              A concise guide to the editorial design system, both scholarship streams, every role and workflow stage,
+              applicant and staff features, security, compliance and deployment.
+            </p>
+          </div>
+          <Link className={styles.guideLink} href="/api/portal-guide" download="NWEF-Portal-Guide.pdf">
+            Download the portal guide
+            <ArrowIcon />
+          </Link>
+        </section>
+
         <footer className={styles.footer}>
           <Link className={`${styles.brand} ${styles.footerBrand}`} href="#home">
             <span className={styles.brandMark}>NW</span>
@@ -114,7 +217,9 @@ export function LandingPage() {
           </Link>
           <p className={styles.footerName}>Eng. Nahil Wijesuriya FIMarEST Endowment Fund</p>
           <div className={styles.footerLinks}>
+            <Link href={applyHref}>Apply now</Link>
             <Link href="/login">Portal sign in</Link>
+            <Link href="/api/portal-guide">Portal guide (PDF)</Link>
             <Link href="#home">Back to top ↑</Link>
           </div>
         </footer>

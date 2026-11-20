@@ -25,6 +25,7 @@ export const childSchema = z.object({
   dateOfBirth: z.coerce.date(),
   school: z.string().trim().min(2).max(160),
   grade: z.string().trim().min(1).max(40),
+  house: z.string().trim().min(1).max(80).default('Not applicable'),
   gender: z.string().trim().max(30).optional(),
   notes: z.string().trim().max(2000).optional(),
 });

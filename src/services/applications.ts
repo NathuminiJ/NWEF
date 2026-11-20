@@ -84,7 +84,7 @@ export async function createApplication(
   user: AuthUser,
   input: {
     stream: Stream;
-    child: { fullName: string; dateOfBirth: Date; school: string; grade: string; gender?: string; notes?: string };
+    child: { fullName: string; dateOfBirth: Date; school: string; grade: string; house?: string; gender?: string; notes?: string };
     guardian?: Record<string, string | undefined>;
     renewalOfId?: string;
   },

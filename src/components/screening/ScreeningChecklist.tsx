@@ -64,8 +64,8 @@ export function ScreeningChecklist({ applicationId, stream }: { applicationId: s
         ))}
         <Field label="Outcome">
           <select className="input" value={outcome} onChange={(event) => setOutcome(event.target.value)}>
-            <option value="ELIGIBLE">Eligible — shortlist</option>
-            <option value="NOT_ELIGIBLE">Not eligible</option>
+            <option value="ELIGIBLE">Selected for interview</option>
+            <option value="NOT_ELIGIBLE">Not shortlisted</option>
             <option value="INFO_REQUESTED">Request information</option>
           </select>
         </Field>

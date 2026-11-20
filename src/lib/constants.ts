@@ -1,5 +1,38 @@
 import type { DocumentType, Role, Stream } from '@prisma/client';
 
+/** Fixed grade choices used by every applicant-facing grade dropdown. */
+export const GRADE_OPTIONS = [
+  'Grade 1',
+  'Grade 2',
+  'Grade 3',
+  'Grade 4',
+  'Grade 5',
+  'Grade 6',
+  'Grade 7',
+  'Grade 8',
+  'Grade 9',
+  'Grade 10',
+  'Grade 11',
+  'Grade 12',
+  'Grade 13',
+  'Other / not applicable',
+] as const;
+
+/** Trinity College, Kandy houses, including day, boarding and junior boarding houses. */
+export const TRINITY_HOUSE_OPTIONS = [
+  'Garret House',
+  'Lemuel House',
+  'Oorloff House',
+  'Simithraaratchy House',
+  'Central Boarding House — Napier',
+  'Central Boarding House — Alison',
+  'Central Boarding House — Ryde',
+  'Junior Boarding House — Collins',
+  'Junior Boarding House — Hodges',
+  'Junior Boarding House — Perry',
+  'Not applicable',
+] as const;
+
 /** Stream A must never request income, salary, or employment evidence. */
 export const ALLOWED_DOCUMENTS: Record<Stream, DocumentType[]> = {
   OLD_TINITIAN_SUPPORT: ['BIRTH_CERTIFICATE', 'SCHOOL_REPORT', 'NATIONAL_ID', 'MEDICAL_CERTIFICATE', 'OTHER'],
@@ -71,7 +104,7 @@ export const dataProtectionNotice = {
   version: '1.0',
   controller: 'Eng. Nahil Wijesuriya Endowment Fund (NWEF)',
   purposes: [
-    'Assessing scholarship eligibility and making award decisions',
+    'Assessing scholarship applications and making award decisions',
     'Verifying identity, relationship, school enrolment and sporting evidence',
     'Administering awards, payments and annual renewals',
     'Meeting legal, audit and safeguarding obligations',

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Alert, Badge, Button, Card, Field } from '@/components/ui';
 import { DocumentUploader } from './DocumentUploader';
 import { patchJson, postJson } from '@/lib/client';
+import { GRADE_OPTIONS, TRINITY_HOUSE_OPTIONS } from '@/lib/constants';
 import type { Stream } from '@prisma/client';
 
 interface WizardApplication {
@@ -16,6 +17,7 @@ interface WizardApplication {
     dateOfBirth: string;
     school: string;
     grade: string;
+    house: string;
     gender: string | null;
   };
   guardian: { addressLine1: string | null; city: string | null; district: string | null; relationshipToChild: string | null } | null;
@@ -54,6 +56,7 @@ export function ApplicationWizard({ application }: { application: WizardApplicat
     dateOfBirth: dateInput(application.child.dateOfBirth),
     school: application.child.school,
     grade: application.child.grade,
+    house: application.child.house || 'Not applicable',
     gender: application.child.gender ?? '',
     addressLine1: application.guardian?.addressLine1 ?? '',
     city: application.guardian?.city ?? '',
@@ -92,6 +95,7 @@ export function ApplicationWizard({ application }: { application: WizardApplicat
             dateOfBirth: form.dateOfBirth ? new Date(form.dateOfBirth).toISOString() : undefined,
             school: form.school,
             grade: form.grade,
+            house: form.house,
             gender: form.gender || undefined,
           },
           guardian: {
@@ -172,7 +176,22 @@ export function ApplicationWizard({ application }: { application: WizardApplicat
               <input className="input" value={form.school} onChange={(event) => set('school', event.target.value)} />
             </Field>
             <Field label="Grade">
-              <input className="input" value={form.grade} onChange={(event) => set('grade', event.target.value)} />
+              <select className="input" value={form.grade} onChange={(event) => set('grade', event.target.value)} required>
+                {GRADE_OPTIONS.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </Field>
+            <Field label="Trinity house" hint="Choose ‘Not applicable’ if no house has been assigned.">
+              <select className="input" value={form.house} onChange={(event) => set('house', event.target.value)} required>
+                {TRINITY_HOUSE_OPTIONS.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
             </Field>
             <Field label="Gender (optional)">
               <input className="input" value={form.gender} onChange={(event) => set('gender', event.target.value)} />
@@ -258,11 +277,13 @@ export function ApplicationWizard({ application }: { application: WizardApplicat
           <dl className="grid gap-3 text-sm md:grid-cols-2">
             <div><dt className="text-muted">Child</dt><dd className="font-medium">{form.fullName}</dd></div>
             <div><dt className="text-muted">Stream</dt><dd className="font-medium">{application.stream.replaceAll('_', ' ')}</dd></div>
+            <div><dt className="text-muted">Grade</dt><dd className="font-medium">{form.grade}</dd></div>
+            <div><dt className="text-muted">Trinity house</dt><dd className="font-medium">{form.house}</dd></div>
             <div><dt className="text-muted">Documents</dt><dd className="font-medium">{application.documents.length} uploaded</dd></div>
           </dl>
           <label className="mt-5 flex items-start gap-2 text-sm">
             <input type="checkbox" checked={consent} onChange={(event) => setConsent(event.target.checked)} className="mt-1" />
-            I consent to NWEF processing this information for eligibility assessment, award administration and audit under the Sri Lanka Personal Data Protection Act.
+            I confirm the information is accurate and consent to NWEF processing it for application assessment, award administration and audit under the Sri Lanka Personal Data Protection Act.
           </label>
           <div className="mt-4 flex gap-3">
             <Button type="button" onClick={submit} disabled={!consent || application.documents.length === 0 || busy}>

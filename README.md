@@ -106,7 +106,7 @@ src/
     budget.ts                Budget tiles and recomputation
     auth/                    OTP + session management
     validation.ts            Zod request schemas
-    storage.ts pdf.ts        Local/S3 storage, award-letter PDF
+    storage.ts pdf.ts        Local/S3 storage, award/application/guide PDFs
     pdpa.ts                  Field encryption, consent, data-subject requests
   services/                  Business logic (application, screening, interview, trustee, finance, admin)
   middleware.ts              Route presence guard (server-side checks repeated in APIs/pages)
@@ -144,6 +144,16 @@ Every arrow is a `TransitionDefinition` in `src/lib/workflow.ts` with `from`, `t
 
 `INFO_REQUESTED` stores `clockPausedAt`; the stored due date is extended by the live pause interval so reviewers never see a false overdue flag. On resume, elapsed paused time is added to `pausedDurationMs` and `slaDueAt` is recomputed (submission + 10 days + total paused time).
 
+Applicants choose grade and Trinity house from fixed dropdowns defined in `src/lib/constants.ts`. No pre-application eligibility test is presented: applicants choose a stream and submit directly. Internal screening still records a neutral shortlisting outcome.
+
+### PDF output
+
+- `GET /api/portal-guide` — public PDF covering the full design system, streams, functionality, workflow, roles, security, compliance and deployment.
+- `GET /api/applications/:id/summary-pdf` — authenticated PDF summary of one application, including child, guardian, stream details, documents and timeline.
+- `GET /api/applications/:id/award-letter` — the existing official award letter.
+
+All PDFs are generated server-side with `pdfkit` using the Institutional Editorial palette and type hierarchy.
+
 ---
 
 ## Roles at a glance
@@ -152,7 +162,7 @@ Every arrow is a `TransitionDefinition` in `src/lib/workflow.ts` with `from`, `t
 | --- | --- | --- |
 | Applicant | Create/edit own draft, upload documents, book interview, respond to info requests, e-sign award, request renewal | Screen, score, approve, record payments, read audit |
 | Admin Officer | Manage pipeline, screening, interview sessions, award letters, SLA reports | Trustee decisions, payment posting |
-| Screening Reviewer | Screening checklist + eligibility outcome, request information | Score, approve, pay |
+| Screening Reviewer | Screening checklist + shortlisting outcome, request information | Score, approve, pay |
 | Interview Panel | Independent weighted scorecards, mark attendance | Screen, approve, pay |
 | Trustee | Batch approve/waitlist/decline, view budget | Post payments, alter scores |
 | Finance Officer | Activate awards, instalments, invoices, payments, budget | Decide awards, screen |

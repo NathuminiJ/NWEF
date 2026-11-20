@@ -269,6 +269,7 @@ model Child {
   dateOfBirth DateTime
   school      String
   grade       String
+  house       String   @default("Not applicable")
   gender      String?
   notes       String?  @db.Text
   createdAt   DateTime @default(now())

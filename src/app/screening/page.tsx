@@ -17,7 +17,7 @@ export default async function ScreeningPage({ searchParams }: { searchParams: Pr
     <AppShell user={user}>
       <header className="page-heading">
         <h1>Screening queue</h1>
-        <p className="page-lede">Complete the checklist and record an eligibility outcome.</p>
+        <p className="page-lede">Complete the checklist and record a shortlisting outcome.</p>
       </header>
       <div className="grid gap-6 lg:grid-cols-[1fr,1.2fr]">
         <Card title={`Awaiting review (${queue.length})`}>
